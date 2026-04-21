@@ -9,7 +9,7 @@ import { Sidebar } from './components/Sidebar';
 import { LandingPage } from './pages/LandingPage';
 import { BlogsPage } from './pages/BlogsPage';
 import { PricingPage } from './pages/PricingPage';
-import { Login, Signup } from './pages/AuthPages';
+import { Login, Signup, AdminLogin } from './pages/AuthPages';
 import { Dashboard } from './pages/Dashboard';
 import { AdminOverview } from './pages/Admin/AdminOverview';
 import { AdminUsers } from './pages/Admin/AdminUsers';
@@ -92,6 +92,13 @@ import { CreditCard, Home, Menu as MenuIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from './lib/utils';
 
+// Admin route protection
+const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAppContext();
+  if (!user || !user.isAdmin) return <Navigate to="/admin/login" />;
+  return <DashboardLayout>{children}</DashboardLayout>;
+};
+
 export default function App() {
   return (
     <AppProvider>
@@ -103,6 +110,7 @@ export default function App() {
           <Route path="/pricing" element={<Layout><PricingPage /></Layout>} />
           <Route path="/login" element={<Layout><Login /></Layout>} />
           <Route path="/signup" element={<Layout><Signup /></Layout>} />
+          <Route path="/admin/login" element={<Layout><AdminLogin /></Layout>} />
           
           {/* User Dashboard */}
           <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
@@ -111,13 +119,13 @@ export default function App() {
           <Route path="/saved" element={<DashboardLayout><SavedPage /></DashboardLayout>} />
           <Route path="/chat" element={<DashboardLayout><ChatPage /></DashboardLayout>} />
 
-          {/* Admin Routes */}
-          <Route path="/admin" element={<DashboardLayout><AdminOverview /></DashboardLayout>} />
-          <Route path="/admin/users" element={<DashboardLayout><AdminUsers /></DashboardLayout>} />
-          <Route path="/admin/users/:userId" element={<DashboardLayout><AdminUserDetail /></DashboardLayout>} />
-          <Route path="/admin/blogs" element={<DashboardLayout><AdminBlogs /></DashboardLayout>} />
-          <Route path="/admin/credits" element={<DashboardLayout><AdminCredits /></DashboardLayout>} />
-          <Route path="/admin/analytics" element={<DashboardLayout><AdminAnalytics /></DashboardLayout>} />
+          {/* Admin Routes (protected - requires admin login) */}
+          <Route path="/admin" element={<AdminRoute><AdminOverview /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+          <Route path="/admin/users/:userId" element={<AdminRoute><AdminUserDetail /></AdminRoute>} />
+          <Route path="/admin/blogs" element={<AdminRoute><AdminBlogs /></AdminRoute>} />
+          <Route path="/admin/credits" element={<AdminRoute><AdminCredits /></AdminRoute>} />
+          <Route path="/admin/analytics" element={<AdminRoute><AdminAnalytics /></AdminRoute>} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" />} />

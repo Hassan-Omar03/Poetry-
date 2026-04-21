@@ -1,4 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import { analyzeLocally } from "./localPoetryEngine";
 
 let _ai: GoogleGenAI | null = null;
 
@@ -18,7 +19,7 @@ function getAI(): GoogleGenAI {
 // Retry helper with exponential backoff for 503 / 429 errors
 async function withRetry<T>(
   fn: () => Promise<T>,
-  maxRetries: number = 3,
+  maxRetries: number = 2,
   baseDelayMs: number = 2000
 ): Promise<T> {
   let lastError: unknown;
@@ -38,21 +39,10 @@ async function withRetry<T>(
         err?.status === 429;
 
       if (!isRetryable || attempt === maxRetries) {
-        // For quota exhausted, give a user-friendly message
-        if (msg.includes("RESOURCE_EXHAUSTED") || msg.includes("quota")) {
-          throw new Error(
-            "API quota exhausted. Please get a new API key from https://aistudio.google.com/apikey or wait for your daily quota to reset, then update your .env file."
-          );
-        }
         throw err;
       }
 
-      // Try to extract server-suggested retry delay
-      const retryMatch = msg.match(/retry in ([\d.]+)s/i);
-      const delay = retryMatch
-        ? Math.ceil(parseFloat(retryMatch[1]) * 1000)
-        : baseDelayMs * Math.pow(2, attempt);
-
+      const delay = baseDelayMs * Math.pow(2, attempt);
       console.warn(
         `Gemini API rate limited (attempt ${attempt + 1}/${maxRetries + 1}). Retrying in ${Math.round(delay / 1000)}s...`
       );
@@ -92,92 +82,98 @@ export async function explainPoetry(
   poem: string,
   targetLanguage: string = "English"
 ): Promise<PoetryAnalysis> {
-  const response = await withRetry(() =>
-    getAI().models.generateContent({
-      model: "gemini-2.0-flash-lite",
-      contents: `Analyze the following poem. Provide a detailed explanation, translation to ${targetLanguage} (if the poem is not in ${targetLanguage}), word dictionary for difficult words (including pronunciation if possible), context about the poet (era, bio, why they chose this form), themes, literary devices, and potential study sources.
+  // Try the Gemini API first
+  try {
+    const response = await withRetry(() =>
+      getAI().models.generateContent({
+        model: "gemini-2.0-flash-lite",
+        contents: `Analyze the following poem. Provide a detailed explanation, translation to ${targetLanguage} (if the poem is not in ${targetLanguage}), word dictionary for difficult words (including pronunciation if possible), context about the poet (era, bio, why they chose this form), themes, literary devices, and potential study sources.
 
 Poem:
 ${poem}`,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            originalPoem: { type: Type.STRING },
-            translation: { type: Type.STRING },
-            explanation: { type: Type.STRING },
-            wordDictionary: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  word: { type: Type.STRING },
-                  meaning: { type: Type.STRING },
-                  translation: { type: Type.STRING },
-                  pronunciation: { type: Type.STRING }
-                },
-                required: ["word", "meaning"]
-              }
-            },
-            poet: {
-              type: Type.OBJECT,
-              properties: {
-                name: { type: Type.STRING },
-                era: { type: Type.STRING },
-                bio: { type: Type.STRING },
-                whyForm: { type: Type.STRING },
-                wikipediaLink: { type: Type.STRING }
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              originalPoem: { type: Type.STRING },
+              translation: { type: Type.STRING },
+              explanation: { type: Type.STRING },
+              wordDictionary: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    word: { type: Type.STRING },
+                    meaning: { type: Type.STRING },
+                    translation: { type: Type.STRING },
+                    pronunciation: { type: Type.STRING }
+                  },
+                  required: ["word", "meaning"]
+                }
               },
-              required: ["name", "era", "bio", "whyForm"]
-            },
-            themes: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING }
-            },
-            literaryDevices: {
-              type: Type.ARRAY,
-              items: {
+              poet: {
                 type: Type.OBJECT,
                 properties: {
-                  device: { type: Type.STRING },
-                  example: { type: Type.STRING },
-                  meaning: { type: Type.STRING }
+                  name: { type: Type.STRING },
+                  era: { type: Type.STRING },
+                  bio: { type: Type.STRING },
+                  whyForm: { type: Type.STRING },
+                  wikipediaLink: { type: Type.STRING }
                 },
-                required: ["device", "example", "meaning"]
+                required: ["name", "era", "bio", "whyForm"]
+              },
+              themes: {
+                type: Type.ARRAY,
+                items: { type: Type.STRING }
+              },
+              literaryDevices: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    device: { type: Type.STRING },
+                    example: { type: Type.STRING },
+                    meaning: { type: Type.STRING }
+                  },
+                  required: ["device", "example", "meaning"]
+                }
+              },
+              sources: {
+                type: Type.ARRAY,
+                items: { type: Type.STRING }
               }
             },
-            sources: {
-              type: Type.ARRAY,
-              items: { type: Type.STRING }
-            }
-          },
-          required: [
-            "originalPoem",
-            "explanation",
-            "wordDictionary",
-            "poet",
-            "themes",
-            "literaryDevices",
-            "sources"
-          ]
+            required: [
+              "originalPoem",
+              "explanation",
+              "wordDictionary",
+              "poet",
+              "themes",
+              "literaryDevices",
+              "sources"
+            ]
+          }
         }
-      }
-    })
-  );
+      })
+    );
 
-  // ✅ SAFE parsing (fixes your TS error)
-  const text = response.text;
+    const text = response.text;
 
-  if (!text) {
-    throw new Error("Empty response from Gemini API");
-  }
+    if (!text) {
+      throw new Error("Empty response from Gemini API");
+    }
 
-  try {
-    return JSON.parse(text) as PoetryAnalysis;
-  } catch (err) {
-    console.error("Invalid JSON from Gemini:", text);
-    throw new Error("Failed to parse AI response");
+    try {
+      return JSON.parse(text) as PoetryAnalysis;
+    } catch (err) {
+      console.error("Invalid JSON from Gemini:", text);
+      throw new Error("Failed to parse AI response");
+    }
+  } catch (apiError) {
+    // ✅ FALLBACK: Use local analysis engine when API fails
+    console.warn("Gemini API failed, using local analysis engine:", apiError);
+    return analyzeLocally(poem, targetLanguage);
   }
 }
 
@@ -186,27 +182,44 @@ export async function chatAboutPoetry(
   history: { role: "user" | "model"; text: string }[],
   message: string
 ) {
-  const chat = getAI().chats.create({
-    model: "gemini-2.0-flash-lite",
-    config: {
-      systemInstruction: `You are an expert poetry guide. The user is asking questions about the following poem:
+  // Try the Gemini API first
+  try {
+    const chat = getAI().chats.create({
+      model: "gemini-2.0-flash-lite",
+      config: {
+        systemInstruction: `You are an expert poetry guide. The user is asking questions about the following poem:
       
 ${poem}
 
 Be insightful, encouraging, and academic yet accessible. Use literary terms where appropriate.`
+      }
+    });
+
+    const response = await withRetry(() =>
+      chat.sendMessage({
+        message
+      })
+    );
+
+    if (!response.text) {
+      throw new Error("Empty response from chat API");
     }
-  });
 
-  const response = await withRetry(() =>
-    chat.sendMessage({
-      message
-    })
-  );
+    return response.text;
+  } catch (apiError) {
+    // ✅ FALLBACK: Provide a helpful offline response
+    console.warn("Chat API failed, providing offline response:", apiError);
+    return `Thank you for your question about this poem! While our AI service is temporarily unavailable, here are some general insights:
 
-  // ✅ handle undefined safely
-  if (!response.text) {
-    throw new Error("Empty response from chat API");
+**Your question:** "${message}"
+
+Poetry analysis involves examining several key elements:
+• **Theme** — What central ideas or emotions does the poem explore?
+• **Imagery** — What sensory details does the poet use?
+• **Structure** — How does the form (rhyme, meter, stanzas) support the meaning?
+• **Literary devices** — Look for metaphors, similes, personification, and symbolism.
+• **Historical context** — Consider when and why the poet wrote this piece.
+
+Try analyzing the poem through these lenses. Our full AI analysis service will be back shortly — please try again in a few minutes for a detailed, personalized response.`;
   }
-
-  return response.text;
 }

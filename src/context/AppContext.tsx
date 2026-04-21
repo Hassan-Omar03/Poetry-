@@ -18,9 +18,16 @@ interface Blog {
   preview: string;
 }
 
+// ── Admin credentials (in production, this would be server-side) ──
+const ADMIN_ACCOUNTS = [
+  { email: 'admin@poetry.com', password: 'admin123', name: 'Admin User' },
+  { email: 'mohammadhassano823@gmail.com', password: 'hassan123', name: 'Hassan Omar' },
+];
+
 interface AppContextType {
   user: User | null;
-  login: (email: string) => void;
+  login: (email: string, password?: string) => { success: boolean; error?: string };
+  adminLogin: (email: string, password: string) => { success: boolean; error?: string };
   logout: () => void;
   consumeCredit: () => boolean;
   blogs: Blog[];
@@ -50,26 +57,43 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   ]);
 
-  const login = (email: string) => {
-    // Mock login
-    if (email === 'admin@poetry.com' || email === 'mohammadhassano823@gmail.com') {
-      setUser({
-        id: 'admin-1',
-        name: 'Admin User',
-        email: email,
-        credits: 999,
-        plan: 'pro',
-        isAdmin: true
-      });
-    } else {
-      setUser({
-        id: 'user-1',
-        name: 'John Doe',
-        email: email || 'john@example.com',
-        credits: 20, // 20 credits on signup as requested
-        plan: 'free'
-      });
+  // Regular user login (email only for demo)
+  const login = (email: string, password?: string): { success: boolean; error?: string } => {
+    if (!email) return { success: false, error: 'Email is required.' };
+
+    setUser({
+      id: 'user-' + Math.random().toString(36).substr(2, 6),
+      name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+      email: email,
+      credits: 20, // 20 credits on signup
+      plan: 'free'
+    });
+    return { success: true };
+  };
+
+  // Admin login (requires email + password)
+  const adminLogin = (email: string, password: string): { success: boolean; error?: string } => {
+    if (!email || !password) {
+      return { success: false, error: 'Email and password are required.' };
     }
+
+    const adminAccount = ADMIN_ACCOUNTS.find(
+      (a) => a.email.toLowerCase() === email.toLowerCase() && a.password === password
+    );
+
+    if (!adminAccount) {
+      return { success: false, error: 'Invalid admin credentials. Access denied.' };
+    }
+
+    setUser({
+      id: 'admin-1',
+      name: adminAccount.name,
+      email: adminAccount.email,
+      credits: 999,
+      plan: 'pro',
+      isAdmin: true
+    });
+    return { success: true };
   };
 
   const logout = () => setUser(null);
@@ -91,7 +115,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   return (
-    <AppContext.Provider value={{ user, login, logout, consumeCredit, blogs, addBlog }}>
+    <AppContext.Provider value={{ user, login, adminLogin, logout, consumeCredit, blogs, addBlog }}>
       {children}
     </AppContext.Provider>
   );
