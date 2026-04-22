@@ -105,15 +105,15 @@ export const ChatPage: React.FC = () => {
               </h3>
               <div className="space-y-1">
                  {['Metaphors in Frost', 'Shakespeare\'s 18th', 'Plath\'s Dark Imagery'].map((item, i) => (
-                    <button key={i} className="w-full px-4 py-3 rounded-lg border border-transparent hover:border-slate-200 hover:bg-slate-50 text-left text-xs font-bold text-slate-500 hover:text-indigo-600 transition-all flex items-center justify-between group uppercase tracking-tight">
+                    <button key={i} className="w-full px-4 py-3 rounded-lg border border-transparent hover:border-slate-200 hover:bg-slate-50 text-left text-xs font-bold text-slate-500 hover:text-purple-600 transition-all flex items-center justify-between group uppercase tracking-tight">
                        <span className="truncate">{item}</span>
                        <ChevronRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </button>
                  ))}
               </div>
            </div>
-           <div className="rounded-2xl border-2 border-indigo-200 border-dashed bg-white p-8 flex flex-col items-center text-center gap-4 shadow-sm relative overflow-hidden group">
-              <div className="h-12 w-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-100 group-hover:scale-110 transition-transform">
+           <div className="rounded-2xl border-2 border-purple-200 border-dashed bg-white p-8 flex flex-col items-center text-center gap-4 shadow-sm relative overflow-hidden group">
+              <div className="h-12 w-12 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-xl shadow-purple-100 group-hover:scale-110 transition-transform">
                  <Sparkles className="h-5 w-5" />
               </div>
               <div className="relative z-10">
@@ -140,7 +140,7 @@ export const ChatPage: React.FC = () => {
                     >
                        <div className={cn(
                           "h-10 w-10 shrink-0 rounded-xl flex items-center justify-center shadow-sm border",
-                          message.role === 'user' ? "bg-slate-50 text-indigo-600 border-slate-200" : "bg-indigo-600 text-white border-indigo-700"
+                          message.role === 'user' ? "bg-slate-50 text-purple-600 border-slate-200" : "bg-purple-600 text-white border-purple-700"
                        )}>
                           {message.role === 'user' ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
                        </div>
@@ -152,7 +152,7 @@ export const ChatPage: React.FC = () => {
                           <div className={cn(
                              "rounded-2xl px-6 py-4 text-[14px] leading-relaxed shadow-sm",
                              message.role === 'user' 
-                                ? "bg-indigo-600 text-white rounded-tr-none" 
+                                ? "bg-purple-600 text-white rounded-tr-none" 
                                 : "bg-slate-50 text-slate-700 rounded-tl-none border border-slate-200 italic serif font-medium"
                           )}>
                              {message.text}
@@ -167,13 +167,13 @@ export const ChatPage: React.FC = () => {
                        animate={{ opacity: 1 }}
                        className="flex items-center gap-5"
                     >
-                       <div className="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg">
+                       <div className="h-10 w-10 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-lg">
                           <Bot className="h-5 w-5" />
                        </div>
                        <div className="flex gap-2 p-5 rounded-2xl bg-slate-50 border border-slate-200 shadow-inner">
-                          <div className="h-1.5 w-1.5 bg-indigo-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                          <div className="h-1.5 w-1.5 bg-indigo-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                          <div className="h-1.5 w-1.5 bg-indigo-400 rounded-full animate-bounce" />
+                          <div className="h-1.5 w-1.5 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                          <div className="h-1.5 w-1.5 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                          <div className="h-1.5 w-1.5 bg-purple-400 rounded-full animate-bounce" />
                        </div>
                     </motion.div>
                  )}
@@ -189,15 +189,15 @@ export const ChatPage: React.FC = () => {
                        onChange={(e) => setInput(e.target.value)}
                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                        placeholder="Inquire about meter, metaphor, or history..."
-                       className="w-full h-16 py-5 pl-16 pr-44 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium outline-none focus:border-indigo-500 focus:bg-white focus:ring-1 focus:ring-indigo-500/20 shadow-xl transition-all placeholder:text-slate-400"
+                       className="w-full h-16 py-5 pl-16 pr-44 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-sm font-medium outline-none focus:border-purple-500 focus:bg-white focus:ring-1 focus:ring-purple-500/20 shadow-xl transition-all placeholder:text-slate-400"
                     />
-                    <div className="absolute left-6 text-slate-300 group-focus-within:text-indigo-400 transition-colors">
+                    <div className="absolute left-6 text-slate-300 group-focus-within:text-purple-400 transition-colors">
                        <MessageCircle className="h-5 w-5" />
                     </div>
                     <button 
                        onClick={handleSend}
                        disabled={isLoading || !input.trim()}
-                       className="absolute right-2 px-6 h-12 rounded-lg bg-indigo-600 text-white transition-all hover:bg-indigo-700 disabled:opacity-30 disabled:grayscale flex items-center gap-3 font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-indigo-100"
+                       className="absolute right-2 px-6 h-12 rounded-lg bg-purple-600 text-white transition-all hover:bg-purple-700 disabled:opacity-30 disabled:grayscale flex items-center gap-3 font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-purple-100"
                     >
                        <Send className="h-3.5 w-3.5" />
                        Assemble Reply

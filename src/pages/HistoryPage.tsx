@@ -31,7 +31,7 @@ export const HistoryPage: React.FC = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
             <input 
                placeholder="Search internal history..." 
-               className="w-full h-12 rounded-2xl bg-slate-900 border border-white/10 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all font-medium"
+               className="w-full h-12 rounded-2xl bg-slate-900 border border-white/10 pl-12 pr-4 outline-none focus:border-purple-500 transition-all font-medium"
             />
          </div>
       </div>
@@ -52,11 +52,11 @@ export const HistoryPage: React.FC = () => {
                     <tr key={item.id} className="hover:bg-white/[0.02] transition-colors group">
                        <td className="px-8 py-6">
                           <div className="flex items-center gap-4">
-                             <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-indigo-400">
+                             <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-purple-400">
                                 <BookOpen className="h-5 w-5" />
                              </div>
                              <div>
-                                <p className="text-sm font-black text-white hover:text-indigo-400 transition-colors cursor-pointer">{item.title}</p>
+                                <p className="text-sm font-black text-white hover:text-purple-400 transition-colors cursor-pointer">{item.title}</p>
                                 <p className="text-xs text-slate-500 font-medium italic mt-1">{item.poet}</p>
                              </div>
                           </div>
@@ -64,12 +64,12 @@ export const HistoryPage: React.FC = () => {
                        <td className="px-8 py-6 text-sm text-slate-400 font-medium">{item.date}</td>
                        <td className="px-8 py-6">
                           <div className="flex items-center gap-2">
-                             <Hash className="h-3 w-3 text-indigo-400" />
+                             <Hash className="h-3 w-3 text-purple-400" />
                              <span className="text-xs font-mono text-white">{item.credits}</span>
                           </div>
                        </td>
                        <td className="px-8 py-6 text-right">
-                          <button className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-indigo-600 hover:border-indigo-500 border border-transparent transition-all">
+                          <button className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-purple-600 hover:border-purple-500 border border-transparent transition-all">
                              <ChevronRight className="h-5 w-5" />
                           </button>
                        </td>

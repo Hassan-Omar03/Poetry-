@@ -23,7 +23,7 @@ export const AdminBlogs: React.FC = () => {
           <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Blog Management</h1>
           <p className="text-sm text-slate-500 font-medium italic serif">Curate and refine the platform's literary archives and critical dialogues.</p>
         </div>
-        <button className="flex h-11 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 text-[10px] uppercase tracking-widest font-bold text-white transition-all hover:bg-indigo-700 shadow-lg shadow-indigo-100">
+        <button className="flex h-11 items-center justify-center gap-2 rounded-lg bg-purple-600 px-6 text-[10px] uppercase tracking-widest font-bold text-white transition-all hover:bg-purple-700 shadow-lg shadow-purple-100">
            <Plus className="h-4 w-4" />
            Compose New Entry
         </button>
@@ -49,9 +49,9 @@ export const AdminBlogs: React.FC = () => {
                      <Clock className="h-3 w-3" />
                      {blog.date}
                      <span className="h-1 w-1 rounded-full bg-slate-200" />
-                     <span className="text-indigo-600 font-black">{blog.poet}</span>
+                     <span className="text-purple-600 font-black">{blog.poet}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-4 line-clamp-2 leading-tight group-hover:text-indigo-600 transition-colors serif italic tracking-tight">{blog.title}</h3>
+                  <h3 className="text-xl font-bold text-slate-800 mb-4 line-clamp-2 leading-tight group-hover:text-purple-600 transition-colors serif italic tracking-tight">{blog.title}</h3>
                   <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-100">
                      <div className="flex items-center gap-4 text-slate-400">
                         <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest">
@@ -59,7 +59,7 @@ export const AdminBlogs: React.FC = () => {
                         </div>
                      </div>
                      <div className="flex items-center gap-2">
-                        <button className="h-9 w-9 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-indigo-100 hover:bg-indigo-50 hover:text-indigo-600 transition-all shadow-sm">
+                        <button className="h-9 w-9 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-purple-100 hover:bg-purple-50 hover:text-purple-600 transition-all shadow-sm">
                            <Edit3 className="h-4 w-4" />
                         </button>
                         <button className="h-9 w-9 rounded-lg border border-slate-200 bg-white flex items-center justify-center text-slate-400 hover:border-rose-100 hover:bg-rose-50 hover:text-rose-600 transition-all shadow-sm">

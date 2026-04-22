@@ -125,7 +125,7 @@ export const AdminOverview: React.FC = () => {
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
          <div className="p-8 border-b border-slate-100 flex items-center justify-between">
             <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Recent Users</h3>
-            <button className="text-indigo-600 font-bold text-[10px] uppercase tracking-widest flex items-center gap-1 hover:underline">
+            <button className="text-purple-600 font-bold text-[10px] uppercase tracking-widest flex items-center gap-1 hover:underline">
                Explore Full Directory <ArrowUpRight className="h-3 w-3" />
             </button>
          </div>
@@ -154,7 +154,7 @@ export const AdminOverview: React.FC = () => {
 const StatsCard = ({ title, value, change, trend, icon }: { title: string, value: string, change: string, trend: 'up' | 'down', icon: React.ReactNode }) => (
   <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 transition-all group shadow-sm">
      <div className="flex items-start justify-between mb-4">
-        <div className="h-10 w-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+        <div className="h-10 w-10 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
            {icon}
         </div>
         <div className={cn(
@@ -176,7 +176,7 @@ const ActivityItem = ({ name, action, time, emoji }: any) => (
         {emoji}
      </div>
      <div className="flex-1 overflow-hidden">
-        <p className="text-xs font-semibold text-slate-700 truncate"><span className="text-indigo-600 underline underline-offset-2">{name}</span> {action}</p>
+        <p className="text-xs font-semibold text-slate-700 truncate"><span className="text-purple-600 underline underline-offset-2">{name}</span> {action}</p>
         <p className="text-[10px] text-slate-400 font-medium uppercase tracking-tight mt-0.5">{time}</p>
      </div>
   </div>
@@ -186,7 +186,7 @@ const UserRow = ({ name, email, plan, credits, status }: any) => (
   <tr className="hover:bg-slate-50/50 transition-colors group">
      <td className="px-8 py-4">
         <div className="flex items-center gap-3">
-           <div className="h-9 w-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs uppercase">{name[0]}</div>
+           <div className="h-9 w-9 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs uppercase">{name[0]}</div>
            <div>
               <p className="text-sm font-bold text-slate-800 leading-none mb-1">{name}</p>
               <p className="text-[10px] text-slate-400 leading-none font-medium uppercase tracking-tight">{email}</p>
@@ -196,7 +196,7 @@ const UserRow = ({ name, email, plan, credits, status }: any) => (
      <td className="px-8 py-4">
         <span className={cn(
           "px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider",
-          plan === 'Pro' ? "bg-indigo-50 text-indigo-600 border border-indigo-100" : "bg-slate-50 text-slate-500 border border-slate-100"
+          plan === 'Pro' ? "bg-purple-50 text-purple-600 border border-purple-100" : "bg-slate-50 text-slate-500 border border-slate-100"
         )}>{plan}</span>
      </td>
      <td className="px-8 py-4 text-xs font-mono text-slate-500 font-bold">{credits}</td>

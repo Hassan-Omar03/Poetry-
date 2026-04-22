@@ -59,10 +59,10 @@ export const AdminUserDetail: React.FC = () => {
         {/* Profile Card */}
         <div className="lg:col-span-1 space-y-8">
            <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm overflow-hidden relative">
-              <div className="absolute top-0 right-0 h-32 w-32 -translate-y-1/2 translate-x-1/2 rounded-full bg-indigo-50 blur-3xl" />
+              <div className="absolute top-0 right-0 h-32 w-32 -translate-y-1/2 translate-x-1/2 rounded-full bg-purple-50 blur-3xl" />
               
               <div className="flex flex-col items-center text-center">
-                 <div className="h-24 w-24 rounded-2xl bg-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-xl shadow-indigo-100 italic serif">
+                 <div className="h-24 w-24 rounded-2xl bg-purple-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-xl shadow-purple-100 italic serif">
                     {user.name[0]}
                  </div>
                  <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{user.name}</h2>
@@ -71,11 +71,11 @@ export const AdminUserDetail: React.FC = () => {
                  <div className="mt-8 grid grid-cols-2 gap-4 w-full">
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Credits</p>
-                       <p className="text-xl font-bold text-indigo-600 tracking-tighter">{user.credits}</p>
+                       <p className="text-xl font-bold text-purple-600 tracking-tighter">{user.credits}</p>
                     </div>
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-center">
                        <p className="text-[10px] uppercase font-bold text-slate-400 mb-1">Plan</p>
-                       <span className="px-2 py-0.5 rounded-lg bg-indigo-600 text-white text-[10px] font-bold uppercase">{user.plan}</span>
+                       <span className="px-2 py-0.5 rounded-lg bg-purple-600 text-white text-[10px] font-bold uppercase">{user.plan}</span>
                     </div>
                  </div>
 
@@ -98,7 +98,7 @@ export const AdminUserDetail: React.FC = () => {
               </h3>
               <div className="space-y-2">
                  {user.searchHistory.map((query, i) => (
-                    <div key={i} className="px-4 py-3 rounded-lg bg-slate-50 border border-slate-100 text-xs font-bold text-slate-600 hover:text-indigo-600 hover:bg-white transition-all cursor-pointer flex items-center justify-between group">
+                    <div key={i} className="px-4 py-3 rounded-lg bg-slate-50 border border-slate-100 text-xs font-bold text-slate-600 hover:text-purple-600 hover:bg-white transition-all cursor-pointer flex items-center justify-between group">
                        {query}
                        <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100" />
                     </div>
@@ -130,7 +130,7 @@ export const AdminUserDetail: React.FC = () => {
                              <td className="py-4 text-slate-500">{item.date}</td>
                              <td className="py-4 font-bold text-slate-800">{item.type}</td>
                              <td className="py-4 text-slate-500 serif italic">"{item.poem}"</td>
-                             <td className="py-4 text-right font-mono text-indigo-600 font-bold">-{item.cost}</td>
+                             <td className="py-4 text-right font-mono text-purple-600 font-bold">-{item.cost}</td>
                           </tr>
                        ))}
                     </tbody>
@@ -145,9 +145,9 @@ export const AdminUserDetail: React.FC = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {user.chatHistory.map(chat => (
-                    <div key={chat.id} className="p-6 rounded-xl bg-slate-50 border border-slate-100 hover:border-indigo-300 transition-all cursor-pointer group">
+                    <div key={chat.id} className="p-6 rounded-xl bg-slate-50 border border-slate-100 hover:border-purple-300 transition-all cursor-pointer group">
                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{chat.date}</p>
-                       <h4 className="text-sm font-bold text-slate-800 group-hover:text-indigo-600 transition-colors mb-4">{chat.title}</h4>
+                       <h4 className="text-sm font-bold text-slate-800 group-hover:text-purple-600 transition-colors mb-4">{chat.title}</h4>
                        <button className="text-[10px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-2 group-hover:text-slate-800">
                           Examine Log
                           <ArrowLeft className="h-3 w-3 rotate-180" />

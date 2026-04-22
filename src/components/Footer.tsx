@@ -8,9 +8,9 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 text-indigo-400">
+            <Link to="/" className="flex items-center gap-2 text-purple-400">
               <Feather className="h-6 w-6" />
-              <span className="text-xl font-bold tracking-tight text-white">Poetry<span className="text-indigo-500">Explainer</span></span>
+              <span className="text-xl font-bold tracking-tight text-white">Poetry<span className="text-purple-500">Explainer</span></span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-slate-400">
               Illuminating the depths of human expression through the power of artificial intelligence. Understand any poem, in any language.
@@ -33,25 +33,25 @@ export const Footer: React.FC = () => {
           <div>
             <h3 className="text-sm font-semibold text-white">Product</h3>
             <ul className="mt-4 space-y-2">
-              <li><Link to="/features" className="text-sm text-slate-400 hover:text-indigo-400">Features</Link></li>
-              <li><Link to="/pricing" className="text-sm text-slate-400 hover:text-indigo-400">Pricing</Link></li>
-              <li><Link to="/how-it-works" className="text-sm text-slate-400 hover:text-indigo-400">How It Works</Link></li>
+              <li><Link to="/features" className="text-sm text-slate-400 hover:text-purple-400">Features</Link></li>
+              <li><Link to="/pricing" className="text-sm text-slate-400 hover:text-purple-400">Pricing</Link></li>
+              <li><Link to="/how-it-works" className="text-sm text-slate-400 hover:text-purple-400">How It Works</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-white">Resources</h3>
             <ul className="mt-4 space-y-2">
-              <li><Link to="/blogs" className="text-sm text-slate-400 hover:text-indigo-400">Blog</Link></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-indigo-400">Community</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-indigo-400">Documentation</a></li>
+              <li><Link to="/blogs" className="text-sm text-slate-400 hover:text-purple-400">Blog</Link></li>
+              <li><a href="#" className="text-sm text-slate-400 hover:text-purple-400">Community</a></li>
+              <li><a href="#" className="text-sm text-slate-400 hover:text-purple-400">Documentation</a></li>
             </ul>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-white">Legal</h3>
             <ul className="mt-4 space-y-2">
-              <li><a href="#" className="text-sm text-slate-400 hover:text-indigo-400">Privacy</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-indigo-400">Terms</a></li>
-              <li><a href="#" className="text-sm text-slate-400 hover:text-indigo-400">Cookie Policy</a></li>
+              <li><a href="#" className="text-sm text-slate-400 hover:text-purple-400">Privacy</a></li>
+              <li><a href="#" className="text-sm text-slate-400 hover:text-purple-400">Terms</a></li>
+              <li><a href="#" className="text-sm text-slate-400 hover:text-purple-400">Cookie Policy</a></li>
             </ul>
           </div>
         </div>

@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center text-white font-bold">P</div>
-          <span className="text-xl font-bold tracking-tight text-slate-800">Poetry<span className="text-indigo-600">Explainer</span></span>
+          <span className="text-xl font-bold tracking-tight text-slate-800">Poetry<span className="text-purple-600">Explainer</span></span>
         </Link>
 
         {/* Desktop Nav */}
@@ -34,8 +34,8 @@ export const Header: React.FC = () => {
               key={link.name}
               to={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-indigo-600",
-                location.pathname === link.href ? "text-indigo-600" : "text-slate-500"
+                "text-sm font-medium transition-colors hover:text-purple-600",
+                location.pathname === link.href ? "text-purple-600" : "text-slate-500"
               )}
             >
               {link.name}
@@ -50,7 +50,7 @@ export const Header: React.FC = () => {
                 <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
                 <span className="text-xs font-semibold text-slate-600">{user.credits} Credits left</span>
               </div>
-               <Link to={user.isAdmin ? "/admin" : "/dashboard"} className="text-sm font-semibold text-slate-700 hover:text-indigo-600">
+               <Link to={user.isAdmin ? "/admin" : "/dashboard"} className="text-sm font-semibold text-slate-700 hover:text-purple-600">
                 Dashboard
               </Link>
               <button 
@@ -62,10 +62,10 @@ export const Header: React.FC = () => {
             </div>
           ) : (
             <>
-              <Link to="/login" className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors">
+              <Link to="/login" className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-purple-600 transition-colors">
                     Login
                 </Link>
-                <Link to="/signup" className="flex items-center gap-2 rounded-lg gradient-bg px-6 py-2.5 text-sm font-bold text-white transition-all shadow-lg shadow-indigo-200 hover:scale-[1.02] active:scale-95">
+                <Link to="/signup" className="flex items-center gap-2 rounded-lg gradient-bg px-6 py-2.5 text-sm font-bold text-white transition-all shadow-lg shadow-purple-200 hover:scale-[1.02] active:scale-95">
                    Sign Up Free
                 </Link>
             </>
@@ -91,7 +91,7 @@ export const Header: React.FC = () => {
                 to={link.href}
                 className={cn(
                   "block py-3 text-base font-bold tracking-tight transition-colors",
-                  location.pathname === link.href ? "text-indigo-600" : "text-slate-600 hover:text-indigo-600"
+                  location.pathname === link.href ? "text-purple-600" : "text-slate-600 hover:text-purple-600"
                 )}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -118,7 +118,7 @@ export const Header: React.FC = () => {
                   </Link>
                   <Link
                     to="/signup"
-                    className="flex items-center justify-center rounded-xl gradient-bg py-4 text-sm font-bold text-white shadow-lg shadow-indigo-200"
+                    className="flex items-center justify-center rounded-xl gradient-bg py-4 text-sm font-bold text-white shadow-lg shadow-purple-200"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign Up Free

@@ -54,6 +54,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       poet: 'William Wordsworth',
       date: '2024-03-21',
       preview: 'How nature inspires the human soul in Wordsworths famous verses.'
+    },
+    {
+      id: '3',
+      title: 'Shall I Compare Thee: Immortality Through Verse',
+      content: 'Shakespeare\'s Sonnet 18 is a masterclass in how art transcends mortality...',
+      poet: 'William Shakespeare',
+      date: '2024-03-22',
+      preview: 'How Shakespeare used the sonnet form to argue that poetry can conquer time itself.'
     }
   ]);
 

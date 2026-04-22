@@ -25,7 +25,7 @@ export const AdminCredits: React.FC = () => {
           <p className="text-sm text-slate-500 font-medium italic serif">Supervise transaction balances and algorithmic resource allocation.</p>
         </div>
         <div className="flex gap-4">
-           <button className="flex h-11 items-center gap-2 rounded-lg bg-indigo-600 px-6 text-[10px] uppercase tracking-widest font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">
+           <button className="flex h-11 items-center gap-2 rounded-lg bg-purple-600 px-6 text-[10px] uppercase tracking-widest font-bold text-white hover:bg-purple-700 transition-all shadow-lg shadow-purple-100">
               <Plus className="h-4 w-4" />
               Mass Quota Adjustment
            </button>
@@ -35,7 +35,7 @@ export const AdminCredits: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
          <StatsCard label="Circulating Credits" value="452,000" subValue="+12k this week" icon={<Plus className="text-emerald-600" />} />
          <StatsCard label="System Expenditure" value="381,241" subValue="+8k this week" icon={<Minus className="text-rose-600" />} />
-         <StatsCard label="Mean Daily Drain" value="24.5" subValue="Stable" icon={<Users className="text-indigo-600" />} />
+         <StatsCard label="Mean Daily Drain" value="24.5" subValue="Stable" icon={<Users className="text-purple-600" />} />
       </div>
 
       <div className="flex gap-4 border-b border-slate-100 pb-px">
@@ -57,7 +57,7 @@ export const AdminCredits: React.FC = () => {
                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                    <input 
                      placeholder="Search byproduct identity or ledger ID..." 
-                     className="w-full h-11 bg-slate-50 border border-slate-200 rounded-lg pl-11 pr-4 text-xs font-medium text-slate-600 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all shadow-sm"
+                     className="w-full h-11 bg-slate-50 border border-slate-200 rounded-lg pl-11 pr-4 text-xs font-medium text-slate-600 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 transition-all shadow-sm"
                    />
                 </div>
                 <button className="flex items-center gap-2 h-11 px-6 rounded-lg border border-slate-200 bg-white text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all shadow-sm">
@@ -84,14 +84,14 @@ export const AdminCredits: React.FC = () => {
                             <td className="py-4 font-mono text-[10px] text-slate-400 font-bold uppercase">TX-912{i}83</td>
                             <td className="py-4">
                                <div className="flex items-center gap-3">
-                                  <div className="h-8 w-8 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-[10px] uppercase">{i}</div>
+                                  <div className="h-8 w-8 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-[10px] uppercase">{i}</div>
                                   <span className="font-bold text-slate-700">explorer_{i}@example.com</span>
                                 </div>
                             </td>
                             <td className="py-4">
                                <span className={cn(
                                  "px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider border",
-                                 i % 2 === 0 ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-indigo-50 text-indigo-600 border-indigo-100"
+                                 i % 2 === 0 ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-purple-50 text-purple-600 border-purple-100"
                                )}>
                                  {i % 2 === 0 ? 'Adjustment' : 'Analysis'}
                                </span>
@@ -128,7 +128,7 @@ export const AdminCredits: React.FC = () => {
                  { label: 'Recurrent Refill', value: '10 Credits' },
                  { label: 'Rollover Status', value: 'Inactive' },
                ]}
-               icon={<Settings className="h-5 w-5 text-indigo-600" />}
+               icon={<Settings className="h-5 w-5 text-purple-600" />}
              />
              <RuleCard 
                title="Scholar Tier Quota" 
@@ -154,7 +154,7 @@ const StatsCard = ({ label, value, subValue, icon }: { label: string, value: str
      <div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1 leading-none">{label}</p>
         <h3 className="text-3xl font-bold text-slate-800 tracking-tight">{value}</h3>
-        <p className="text-[10px] font-bold text-indigo-600 mt-1 uppercase tracking-widest">{subValue}</p>
+        <p className="text-[10px] font-bold text-purple-600 mt-1 uppercase tracking-widest">{subValue}</p>
      </div>
      <div className="h-12 w-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl group-hover:scale-110 transition-all duration-300">
         {icon}
@@ -167,7 +167,7 @@ const TabButton = ({ active, onClick, children }: { active: boolean, onClick: ()
     onClick={onClick}
     className={cn(
       "px-6 py-4 text-[10px] font-bold uppercase tracking-widest border-b-2 transition-all",
-      active ? "border-indigo-600 text-indigo-600" : "border-transparent text-slate-400 hover:text-slate-600"
+      active ? "border-purple-600 text-purple-600" : "border-transparent text-slate-400 hover:text-slate-600"
     )}
   >
      {children}

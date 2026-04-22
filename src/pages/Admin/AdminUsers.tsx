@@ -22,7 +22,7 @@ export const AdminUsers: React.FC = () => {
           <h1 className="text-3xl font-bold text-slate-800 tracking-tight">User Management</h1>
           <p className="text-sm text-slate-500 font-medium italic serif">Supervise and curate the community of poetic explorers.</p>
         </div>
-        <button className="flex h-11 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 text-[10px] uppercase tracking-widest font-bold text-white transition-all hover:bg-indigo-700 shadow-lg shadow-indigo-100">
+        <button className="flex h-11 items-center justify-center gap-2 rounded-lg bg-purple-600 px-6 text-[10px] uppercase tracking-widest font-bold text-white transition-all hover:bg-purple-700 shadow-lg shadow-purple-100">
            <UserPlus className="h-4 w-4" />
            Onboard New Member
         </button>
@@ -34,7 +34,7 @@ export const AdminUsers: React.FC = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input 
                placeholder="Identify user by name, email or access ID..." 
-               className="w-full h-11 rounded-lg bg-white border border-slate-200 pl-11 pr-4 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all text-xs font-medium text-slate-600 shadow-sm"
+               className="w-full h-11 rounded-lg bg-white border border-slate-200 pl-11 pr-4 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 transition-all text-xs font-medium text-slate-600 shadow-sm"
             />
          </div>
          <button className="h-11 px-6 rounded-lg border border-slate-200 bg-white flex items-center gap-2 text-slate-500 text-[10px] uppercase tracking-widest font-bold hover:bg-slate-50 transition-all shadow-sm">
@@ -76,11 +76,11 @@ const UserTableRow = ({ id, name, email, plan, usage, date }: any) => (
   <tr className="hover:bg-slate-50/50 transition-colors group">
      <td className="px-8 py-6">
         <Link to={`/admin/users/${id}`} className="flex items-center gap-4 cursor-pointer">
-           <div className="h-10 w-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs uppercase shadow-sm">
+           <div className="h-10 w-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs uppercase shadow-sm">
               {name[0]}{name.split(' ')[1]?.[0]}
            </div>
            <div>
-              <p className="text-sm font-bold text-slate-800 hover:text-indigo-600 transition-colors">{name}</p>
+              <p className="text-sm font-bold text-slate-800 hover:text-purple-600 transition-colors">{name}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                  <Mail className="h-3 w-3 text-slate-400" />
                  <p className="text-[10px] text-slate-400 font-medium uppercase tracking-tight">{email}</p>
@@ -91,7 +91,7 @@ const UserTableRow = ({ id, name, email, plan, usage, date }: any) => (
      <td className="px-8 py-6">
         <div className={cn(
           "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border",
-          plan === 'Pro' ? "bg-indigo-50 text-indigo-600 border-indigo-100" : "bg-slate-50 text-slate-500 border-slate-100"
+          plan === 'Pro' ? "bg-purple-50 text-purple-600 border-purple-100" : "bg-slate-50 text-slate-500 border-slate-100"
         )}>
           {plan === 'Pro' ? <Zap className="h-3 w-3" /> : <Layers className="h-3 w-3" />}
           {plan}
@@ -107,7 +107,7 @@ const UserTableRow = ({ id, name, email, plan, usage, date }: any) => (
               <div 
                 className={cn(
                   "h-full rounded-full transition-all duration-1000 shadow-sm",
-                  usage > 80 ? "bg-rose-500" : usage > 50 ? "bg-indigo-500" : "bg-emerald-500"
+                  usage > 80 ? "bg-rose-500" : usage > 50 ? "bg-purple-500" : "bg-emerald-500"
                 )}
                 style={{ width: `${usage}%` }}
               />
@@ -117,7 +117,7 @@ const UserTableRow = ({ id, name, email, plan, usage, date }: any) => (
      <td className="px-8 py-6 text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">{date}</td>
      <td className="px-8 py-6 text-right">
         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-           <button className="h-8 w-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-indigo-600 hover:border-indigo-100 hover:bg-indigo-50 transition-all shadow-sm">
+           <button className="h-8 w-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-purple-600 hover:border-purple-100 hover:bg-purple-50 transition-all shadow-sm">
               <Mail className="h-3.5 w-3.5" />
            </button>
            <button className="h-8 w-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:border-rose-100 hover:bg-rose-50 transition-all shadow-sm">

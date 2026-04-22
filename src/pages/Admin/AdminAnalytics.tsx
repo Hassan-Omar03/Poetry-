@@ -45,7 +45,7 @@ export const AdminAnalytics: React.FC = () => {
           <p className="text-sm text-slate-500 font-medium italic serif">Advanced telemetric oversight for the literary ecosystem.</p>
         </div>
         <div className="flex gap-1.5 p-1 bg-slate-100 rounded-lg border border-slate-200">
-           <button className="px-4 py-1.5 rounded-md bg-white text-[10px] font-bold uppercase text-indigo-600 shadow-sm border border-slate-200/50">Real-time stats</button>
+           <button className="px-4 py-1.5 rounded-md bg-white text-[10px] font-bold uppercase text-purple-600 shadow-sm border border-slate-200/50">Real-time stats</button>
            <button className="px-4 py-1.5 rounded-md text-slate-500 hover:text-slate-800 text-[10px] font-bold uppercase transition-colors">Historical logs</button>
         </div>
       </div>
@@ -102,7 +102,7 @@ export const AdminAnalytics: React.FC = () => {
             <div className="space-y-4">
                {['The Raven', 'The Waste Land', 'Ariel', 'Ode to a Grecian Urn'].map((p, i) => (
                   <div key={i} className="flex items-center justify-between text-xs group cursor-pointer">
-                     <span className="text-slate-600 group-hover:text-indigo-600 transition-colors serif italic font-medium tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">“{p}”</span>
+                     <span className="text-slate-600 group-hover:text-purple-600 transition-colors serif italic font-medium tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">“{p}”</span>
                      <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-md uppercase tracking-tighter shrink-0 ml-4">{Math.floor(Math.random() * 200)} explorations</span>
                   </div>
                ))}
@@ -127,16 +127,16 @@ export const AdminAnalytics: React.FC = () => {
                         <span className="text-slate-400">{e.percent}%</span>
                      </div>
                      <div className="h-1.5 w-full bg-slate-100 rounded-lg overflow-hidden">
-                        <div className="h-full bg-indigo-600 rounded-lg shadow-sm" style={{ width: `${e.percent}%` }} />
+                        <div className="h-full bg-purple-600 rounded-lg shadow-sm" style={{ width: `${e.percent}%` }} />
                      </div>
                   </div>
                ))}
             </div>
          </div>
 
-         <div className="rounded-2xl border-2 border-indigo-200 border-dashed bg-white p-8 shadow-sm">
+         <div className="rounded-2xl border-2 border-purple-200 border-dashed bg-white p-8 shadow-sm">
             <div className="flex flex-col items-center text-center justify-center h-full gap-4">
-               <div className="h-12 w-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-100">
+               <div className="h-12 w-12 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-xl shadow-purple-100">
                   <Zap className="h-6 w-6" />
                </div>
                <div>

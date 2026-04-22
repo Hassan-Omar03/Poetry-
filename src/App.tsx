@@ -25,7 +25,7 @@ import { SavedPage } from './pages/SavedPage';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="flex min-h-screen flex-col bg-slate-950 text-slate-50 selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900 selection:bg-purple-200 selection:text-purple-900">
       <Header />
       <main className="flex-1">
         {children}
@@ -43,7 +43,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   if (!user) return <Navigate to="/login" />;
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-50">
+    <div className="flex min-h-screen bg-slate-50 text-slate-900">
       <div className={cn(
         "fixed inset-0 z-40 lg:hidden transition-opacity duration-300",
         isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -60,21 +60,21 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
       <div className="flex flex-1 flex-col">
         {/* Dashboard Top Bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/10 bg-slate-950/80 px-4 md:px-8 backdrop-blur-md">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/90 px-4 md:px-8 backdrop-blur-md shadow-sm">
            <div className="flex items-center gap-4">
               <button 
                 onClick={() => setIsSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg bg-white/5 border border-white/10"
+                className="lg:hidden p-2 rounded-lg bg-slate-100 border border-slate-200 hover:bg-slate-200 transition-colors"
               >
-                 <MenuIcon className="h-5 w-5" />
+                 <MenuIcon className="h-5 w-5 text-slate-600" />
               </button>
-              <div className="flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 ring-1 ring-white/10">
-                 <CreditCard className="h-4 w-4 text-indigo-400" />
-                 <span className="text-xs font-bold text-white">{user.credits} Credits</span>
-              </div>
-              <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold ring-2 ring-white/10 ring-offset-2 ring-offset-slate-950">
-                {user.name[0]}
-              </div>
+               <div className="flex items-center gap-2 rounded-full bg-indigo-50 border border-indigo-100 px-4 py-1.5">
+                 <CreditCard className="h-4 w-4 text-indigo-600" />
+                 <span className="text-xs font-bold text-indigo-700">{user.credits} Credits</span>
+               </div>
+               <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                 {user.name[0]}
+               </div>
            </div>
         </header>
 
@@ -108,9 +108,9 @@ export default function App() {
           <Route path="/" element={<Layout><LandingPage /></Layout>} />
           <Route path="/blogs" element={<Layout><BlogsPage /></Layout>} />
           <Route path="/pricing" element={<Layout><PricingPage /></Layout>} />
-          <Route path="/login" element={<Layout><Login /></Layout>} />
-          <Route path="/signup" element={<Layout><Signup /></Layout>} />
-          <Route path="/admin/login" element={<Layout><AdminLogin /></Layout>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
           
           {/* User Dashboard */}
           <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
