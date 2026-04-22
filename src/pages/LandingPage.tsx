@@ -46,12 +46,11 @@ const LANGUAGES = [
 ];
 
 const FEATURES = [
-  { icon:<Globe className="h-6 w-6"/>, color:'purple', title:'180+ Language Support',       description:'Translate and understand poetry from over 180 languages — from classical Arabic to modern Japanese — with neural precision.' },
-  { icon:<Info className="h-6 w-6"/>,  color:'violet', title:'Logical Explanations',        description:'Complex verses simplified into readable, context-aware insights for all levels — from student to scholar.' },
-  { icon:<Hash className="h-6 w-6"/>,  color:'purple', title:'Literary Device Detection',   description:'Instantly identify metaphors, sonnets, alliteration, anaphora, and deeper structural motifs.' },
-  { icon:<MessageSquare className="h-6 w-6"/>, color:'violet', title:'Scholarly AI Chat',    description:'Dig deeper into any verse with our conversational Poetry Intelligence assistant — ask anything, get scholarly answers.' },
-  { icon:<BookOpen className="h-6 w-6"/>, color:'purple', title:'Global Word Dictionary',   description:'Get definitions, pronunciations, etymologies, and historical context for every significant word in the poem.' },
-  { icon:<BadgeCheck className="h-6 w-6"/>, color:'violet', title:'Personal Digital Archive', description:'Build your personal library of analyzed poetry and access it anywhere, anytime. Save, organize, and revisit.' },
+  { icon:<Globe className="h-7 w-7"/>, color:'purple', title:'180+ Language Support',    description:'Translate and understand poetry from over 180 languages — from classical Arabic to modern Japanese — with neural precision.' },
+  { icon:<Info className="h-7 w-7"/>,  color:'violet', title:'Logical Explanations',     description:'Complex verses simplified into readable, context-aware insights for all levels — from student to scholar.' },
+  { icon:<MessageSquare className="h-7 w-7"/>, color:'purple', title:'Scholarly AI Chat', description:'Dig deeper into any verse with our conversational Poetry Intelligence assistant — ask anything, get scholarly answers.' },
+  { icon:<BookOpen className="h-7 w-7"/>, color:'violet', title:'Global Word Dictionary', description:'Get definitions, pronunciations, etymologies, and historical context for every significant word in the poem.' },
+  { icon:<BadgeCheck className="h-7 w-7"/>, color:'purple', title:'Personal Digital Archive', description:'Build your personal library of analyzed poetry and access it anywhere, anytime. Save, organize, and revisit.' },
 ];
 
 const BLOG_IMGS = [
@@ -81,36 +80,30 @@ export const LandingPage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="overflow-hidden bg-[#F8FAFC]">
+    <div className="overflow-hidden bg-white">
 
       {/* ═══ HERO ═══════════════════════════════════════════ */}
-      <section className="relative min-h-[92vh] flex items-center px-6 md:px-12 lg:px-24 py-28 bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 overflow-hidden">
-        {/* glowing orbs */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-40 -left-40 h-[700px] w-[700px] rounded-full bg-purple-500/20 blur-[160px]" />
-          <div className="absolute -bottom-20 -right-20 h-[500px] w-[500px] rounded-full bg-violet-500/20 blur-[120px]" />
-          <div className="absolute top-1/2 right-1/3 h-[300px] w-[300px] rounded-full bg-indigo-400/15 blur-[80px]" />
-        </div>
+      <section className="relative min-h-[92vh] flex items-center px-6 md:px-12 lg:px-24 py-28 bg-indigo-50 overflow-hidden">
 
-        <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           {/* ── Left ── */}
           <motion.div initial={{ opacity:0, x:-30 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7 }}>
             {/* badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-purple-200 shadow-sm mb-8">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-100 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-700 shadow-sm mb-8">
               <Sparkles className="h-3 w-3" />
               Poetry Meets AI
             </div>
 
             {/* headline */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.05] tracking-tight mb-6">
               Read a poem.<br />
               Understand it deeply.
             </h1>
 
             {/* sub */}
-            <p className="text-lg text-purple-200 leading-relaxed max-w-lg mb-10">
+            <p className="text-lg text-slate-500 leading-relaxed max-w-lg mb-10">
               Paste a verse in{' '}
-              <span className="font-semibold text-white">any language</span>{' '}
+              <span className="font-semibold text-indigo-600">any language</span>{' '}
               — Urdu, Arabic, Swahili, Tamil, and more — and get an explanation in 180+ languages.
               AI uncovers the poet, the meaning, and the story behind every line.
             </p>
@@ -119,14 +112,14 @@ export const LandingPage: React.FC = () => {
             <div className="flex flex-wrap items-center gap-4 mb-10">
               <Link
                 to="/signup"
-                className="group inline-flex h-13 items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-purple-900 shadow-xl shadow-black/20 hover:bg-purple-50 hover:scale-[1.02] transition-all active:scale-95"
+                className="group inline-flex h-13 items-center gap-2 rounded-xl bg-indigo-600 px-8 py-4 font-semibold text-white shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:scale-[1.02] transition-all active:scale-95"
               >
                 Try it free
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <button
                 onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior:'smooth' })}
-                className="inline-flex items-center gap-1.5 py-4 text-purple-200 font-medium hover:text-white transition-colors text-sm"
+                className="inline-flex items-center gap-1.5 py-4 text-slate-500 font-medium hover:text-indigo-700 transition-colors text-sm"
               >
                 How does it work?
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -136,11 +129,11 @@ export const LandingPage: React.FC = () => {
             {/* lang pills */}
             <div className="flex flex-wrap gap-2">
               {LANG_PILLS.map(l => (
-                <span key={l} className="rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-purple-100 shadow-sm">
+                <span key={l} className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-semibold text-slate-600 shadow-sm">
                   {l}
                 </span>
               ))}
-              <span className="rounded-full border border-purple-400/40 bg-purple-500/20 px-4 py-1.5 text-xs font-semibold text-purple-200">
+              <span className="rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5 text-xs font-semibold text-indigo-600">
                 180+ more
               </span>
             </div>
@@ -153,33 +146,33 @@ export const LandingPage: React.FC = () => {
             transition={{ duration:0.7, delay:0.15 }}
             className="relative"
           >
-            <div className="rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md shadow-2xl shadow-black/40 overflow-hidden">
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/60 overflow-hidden">
               {/* titlebar */}
-              <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/5 px-4 py-3">
+              <div className="flex items-center gap-1.5 border-b border-slate-100 bg-slate-50 px-4 py-3">
                 <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
                 <div className="h-2.5 w-2.5 rounded-full bg-amber-400" />
                 <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                <span className="ml-3 text-[11px] font-semibold text-purple-200">Poetry Explainer</span>
+                <span className="ml-3 text-[11px] font-semibold text-slate-400">Poetry Explainer</span>
               </div>
               <div className="p-8">
-                <p className="text-white text-xl leading-relaxed mb-1" style={{ fontFamily:"'Playfair Display',Georgia,serif" }}>
+                <p className="text-slate-800 text-xl leading-relaxed mb-1" style={{ fontFamily:"'Playfair Display',Georgia,serif" }}>
                   Shall I compare thee to a summer's day?
                 </p>
-                <p className="text-white text-xl leading-relaxed mb-6" style={{ fontFamily:"'Playfair Display',Georgia,serif" }}>
+                <p className="text-slate-800 text-xl leading-relaxed mb-6" style={{ fontFamily:"'Playfair Display',Georgia,serif" }}>
                   Thou art more lovely and more temperate.
                 </p>
                 {/* divider */}
-                <div className="h-px bg-gradient-to-r from-purple-400/40 via-violet-400/40 to-transparent mb-6" />
+                <div className="h-px bg-slate-200 mb-6" />
                 {/* tags */}
                 <div className="flex flex-wrap gap-2 mb-6">
                   {['William Shakespeare','Sonnet','Elizabethan'].map(t => (
-                    <span key={t} className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-purple-100">
+                    <span key={t} className="rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
                       {t}
                     </span>
                   ))}
                 </div>
                 {/* ai output */}
-                <p className="text-sm text-purple-200 leading-relaxed italic" style={{ fontFamily:"'Playfair Display',Georgia,serif" }}>
+                <p className="text-sm text-slate-500 leading-relaxed italic" style={{ fontFamily:"'Playfair Display',Georgia,serif" }}>
                   "Should I compare you to a summer day? You are more beautiful and more even-tempered."
                 </p>
               </div>
@@ -210,7 +203,7 @@ export const LandingPage: React.FC = () => {
           {/* Steps */}
           <div className="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-0">
             {/* connector line */}
-            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-purple-200 via-violet-300 to-purple-200" />
+            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-0.5 bg-slate-200" />
 
             {[
               { n:'01', title:'Paste Your Poem',  desc:"Enter any poem — Shakespeare, Neruda, Rumi, or modern verse." },
@@ -225,7 +218,7 @@ export const LandingPage: React.FC = () => {
                 className="relative flex flex-col items-center text-center px-4"
               >
                 {/* number tile */}
-                <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 text-white font-black text-lg shadow-xl shadow-violet-300/40">
+                <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-600 text-white font-black text-lg">
                   {step.n}
                 </div>
                 <h3 className="text-base font-bold text-slate-900 mb-2">{step.title}</h3>
@@ -254,7 +247,7 @@ export const LandingPage: React.FC = () => {
 
           <motion.div
             initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 rounded-2xl border border-slate-200 bg-[#F8FAFC] p-6 shadow-sm"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm"
           >
             {/* ── Left: Input ── */}
             <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
@@ -358,25 +351,29 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══ FEATURES ═══════════════════════════════════════ */}
-      <section id="features" className="relative py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] via-purple-50/20 to-[#F8FAFC] -z-10" />
+      <section id="features" className="relative py-32 overflow-hidden bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div
             initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             className="text-center mb-20"
           >
-            <span className="text-[10px] font-bold text-purple-600 uppercase tracking-[0.3em]">What You Get</span>
-            <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">Powerful Scholarly Tools</h2>
+            <span className="inline-block rounded-full border border-purple-200 bg-purple-50 px-5 py-2 text-xs font-bold text-purple-600 uppercase tracking-[0.25em] mb-5">What You Get</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
+              Powerful Scholarly Tools
+            </h2>
             <p className="mt-5 text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
               Everything you need to master poetic interpretation in one unified, balanced platform.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+          {/* 3 + 2 grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
               <motion.div
                 key={f.title}
-                initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-                transition={{ delay: i*0.08 }}
+                initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+                transition={{ delay: i * 0.1 }}
+                className={i === 3 ? 'lg:col-start-1 lg:col-span-1 md:col-span-1' : ''}
               >
                 <FeatureCard {...f} index={i} />
               </motion.div>
@@ -386,7 +383,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══ BLOG PREVIEW ═══════════════════════════════════ */}
-      <section className="py-28 bg-[#F8FAFC]">
+      <section className="py-28 bg-slate-50">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div
             initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
@@ -421,7 +418,7 @@ export const LandingPage: React.FC = () => {
                   <p className="text-slate-500 text-sm leading-relaxed mb-5 line-clamp-2">{blog.preview}</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-400 to-violet-400 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center">
                         <UserIcon className="w-3 h-3 text-white"/>
                       </div>
                       <span className="text-xs text-slate-500 font-medium">{blog.poet}</span>
@@ -444,7 +441,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══ FAQ ════════════════════════════════════════════ */}
-      <section className="py-28 bg-[#F8FAFC]">
+      <section className="py-28 bg-slate-50">
         <div className="container mx-auto px-6 max-w-3xl">
           <motion.div
             initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
@@ -494,26 +491,22 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ═══ CTA ════════════════════════════════════════════ */}
-      <section className="py-28 bg-[#F8FAFC]">
+      <section className="py-28 bg-slate-50">
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="relative overflow-hidden rounded-[40px] bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 px-8 py-20 text-center shadow-2xl shadow-purple-900/40 md:px-16 md:py-28">
-            {/* glowing orbs */}
-            <div className="pointer-events-none absolute -top-20 -right-20 h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-[120px]" />
-            <div className="pointer-events-none absolute -bottom-20 -left-20 h-[400px] w-[400px] rounded-full bg-violet-500/20 blur-[100px]" />
-            <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[300px] w-[300px] rounded-full bg-indigo-400/10 blur-[80px]" />
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <span className="text-[10px] font-bold text-purple-300 uppercase tracking-[0.3em]">Get Started</span>
-              <h2 className="mt-3 text-4xl font-bold text-white md:text-6xl leading-tight tracking-tight">
+          <div className="rounded-[40px] bg-indigo-50 border border-indigo-100 px-8 py-20 text-center md:px-16 md:py-28">
+            <div className="max-w-3xl mx-auto">
+              <span className="text-[10px] font-bold text-orange-400 uppercase tracking-[0.3em]">Get Started</span>
+              <h2 className="mt-3 text-4xl font-bold text-slate-900 md:text-5xl leading-tight tracking-tight">
                 Ready to illuminate the verse?
               </h2>
-              <p className="mt-6 text-lg text-purple-200 font-medium leading-relaxed max-w-xl mx-auto">
+              <p className="mt-6 text-lg text-slate-500 font-medium leading-relaxed max-w-xl mx-auto">
                 Join literature enthusiasts exploring the depths of poetry with scholarly precision — in any language.
               </p>
               <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/signup" className="flex h-14 items-center justify-center rounded-xl bg-white px-10 font-bold text-purple-900 hover:bg-purple-50 hover:scale-[1.02] shadow-xl shadow-black/20 transition-all text-base">
+                <Link to="/signup" className="flex h-14 items-center justify-center rounded-xl bg-indigo-600 px-10 font-bold text-white hover:bg-indigo-700 transition-all text-base">
                   Try it for Free
                 </Link>
-                <Link to="/pricing" className="flex h-14 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-10 font-bold text-white hover:bg-white/20 transition-all text-base">
+                <Link to="/pricing" className="flex h-14 items-center justify-center rounded-xl border border-indigo-200 bg-white px-10 font-bold text-slate-700 hover:bg-indigo-50 transition-all text-base">
                   View Pricing
                 </Link>
               </div>
@@ -526,24 +519,22 @@ export const LandingPage: React.FC = () => {
 };
 
 /* ── Feature Card ──────────────────────────────────────────── */
-const COLOR_MAP: Record<string,{bg:string;text:string}> = {
-  purple:{ bg:'bg-purple-50', text:'text-purple-600' },
-  violet:{ bg:'bg-violet-50', text:'text-violet-600' },
-};
-const FeatureCard = ({ icon, color, title, description, index }:{ icon:React.ReactNode; color:string; title:string; description:string; index:number }) => {
-  const c = COLOR_MAP[color];
-  return (
-    <div className="group relative rounded-2xl border border-slate-200 bg-white p-8 hover:border-purple-200 hover:shadow-xl hover:shadow-purple-500/5 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-      <div className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full bg-purple-50/0 group-hover:bg-purple-50/70 blur-2xl transition-all duration-500" />
-      <div className={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${c.bg} ${c.text} transition-all group-hover:scale-110 group-hover:shadow-lg`}>
-        {icon}
-      </div>
-      <div className="absolute top-6 right-6 text-[10px] font-black text-slate-200 group-hover:text-purple-200 transition-colors tracking-widest">
-        {String(index+1).padStart(2,'0')}
-      </div>
-      <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
-      <p className="text-slate-500 leading-relaxed text-sm">{description}</p>
-      <div className={`mt-6 h-0.5 w-10 rounded-full ${c.bg.replace('50','200')} group-hover:w-16 transition-all duration-300`} />
+const FeatureCard = ({ icon, title, description, index }: {
+  icon: React.ReactNode; color: string; title: string; description: string; index: number
+}) => (
+  <div className="group h-full rounded-3xl border border-slate-200 bg-white p-8 hover:border-indigo-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+    {/* number watermark */}
+    <div className="absolute bottom-6 right-7 text-7xl font-black text-slate-50 select-none leading-none">
+      {String(index + 1).padStart(2, '0')}
     </div>
-  );
-};
+    {/* icon — flat solid color */}
+    <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-600 text-white">
+      {icon}
+    </div>
+    {/* text */}
+    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-700 transition-colors">{title}</h3>
+    <p className="text-slate-500 leading-relaxed text-[0.92rem]">{description}</p>
+    {/* underline accent — flat color */}
+    <div className="mt-6 h-0.5 w-8 rounded-full bg-indigo-600 group-hover:w-20 transition-all duration-500" />
+  </div>
+);

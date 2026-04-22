@@ -1,79 +1,100 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Bookmark, Star, Trash2, ExternalLink, Filter, Grid, List as ListIcon } from 'lucide-react';
+import { Bookmark, Star, Trash2, ExternalLink, Grid, List as ListIcon } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
 
 export const SavedPage: React.FC = () => {
+  const [view, setView] = useState<'grid' | 'list'>('grid');
+
   const savedItems = [
-    { id: '1', title: 'The Waste Land', poet: 'T.S. Eliot', tags: ['Modernism', 'Epic'], rating: 5 },
-    { id: '2', title: 'Ode on a Grecian Urn', poet: 'John Keats', tags: ['Romantic', 'Art'], rating: 4 },
-    { id: '3', title: 'Ariel', poet: 'Sylvia Plath', tags: ['Confessional'], rating: 5 },
+    { id: '1', title: 'The Waste Land',       poet: 'T.S. Eliot',       tags: ['Modernism', 'Epic'],   rating: 5 },
+    { id: '2', title: 'Ode on a Grecian Urn', poet: 'John Keats',        tags: ['Romantic', 'Art'],     rating: 4 },
+    { id: '3', title: 'Ariel',                poet: 'Sylvia Plath',      tags: ['Confessional'],        rating: 5 },
   ];
 
   return (
     <div className="space-y-8 pb-12">
+
+      {/* ── Header ── */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-           <h1 className="text-3xl font-black text-white">Curated Library</h1>
-           <p className="text-slate-400">Your personal collection of masterpieces and insights.</p>
+          <h1 className="text-3xl font-black text-slate-900">Curated Library</h1>
+          <p className="text-slate-500 mt-1">Your personal collection of masterpieces and insights.</p>
         </div>
-        <div className="flex gap-4">
-           <div className="flex p-1 bg-white/5 rounded-xl border border-white/10">
-              <button className="p-2 rounded-lg bg-purple-600 text-white shadow-lg"><Grid className="h-4 w-4" /></button>
-              <button className="p-2 rounded-lg text-slate-500 hover:text-white transition-all"><ListIcon className="h-4 w-4" /></button>
-           </div>
+        <div className="flex p-1 bg-slate-100 rounded-xl border border-slate-200 self-start">
+          <button
+            onClick={() => setView('grid')}
+            className={cn('p-2 rounded-lg transition-all', view === 'grid' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700')}
+          >
+            <Grid className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => setView('list')}
+            className={cn('p-2 rounded-lg transition-all', view === 'list' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-700')}
+          >
+            <ListIcon className="h-4 w-4" />
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-         {savedItems.map((item, i) => (
-            <motion.div
-               key={item.id}
-               initial={{ opacity: 0, scale: 0.95 }}
-               animate={{ opacity: 1, scale: 1 }}
-               transition={{ delay: i * 0.1 }}
-               className="group rounded-[32px] border border-white/10 bg-slate-900/50 p-8 shadow-xl hover:border-purple-500/30 transition-all flex flex-col items-start text-left relative overflow-hidden"
+      {/* ── Cards ── */}
+      <div className={cn(
+        view === 'grid'
+          ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+          : 'flex flex-col gap-4'
+      )}>
+        {savedItems.map((item, i) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="group rounded-2xl border border-indigo-100 bg-indigo-100 p-8 hover:border-indigo-200 hover:shadow-lg transition-all flex flex-col relative"
+          >
+            {/* action buttons */}
+            <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button className="h-9 w-9 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 hover:border-red-200 transition-all">
+                <Trash2 className="h-4 w-4" />
+              </button>
+              <button className="h-9 w-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition-all">
+                <Bookmark className="h-4 w-4 fill-white" />
+              </button>
+            </div>
+
+            {/* stars */}
+            <div className="mb-5 flex gap-0.5">
+              {[...Array(5)].map((_, starI) => (
+                <Star
+                  key={starI}
+                  className={cn('h-4 w-4', starI < item.rating ? 'text-amber-400 fill-amber-400' : 'text-slate-200 fill-slate-200')}
+                />
+              ))}
+            </div>
+
+            <h3
+              className="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-700 transition-colors"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
-               <div className="absolute top-0 right-0 p-6 flex gap-2">
-                  <button className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100">
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                  <button className="h-10 w-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-xl shadow-purple-600/20">
-                    <Bookmark className="h-4 w-4 fill-white" />
-                  </button>
-               </div>
+              {item.title}
+            </h3>
+            <p className="text-sm font-medium text-slate-400 italic mb-6">{item.poet}</p>
 
-               <div className="mb-6 flex gap-1">
-                  {[...Array(5)].map((_, starI) => (
-                    <Star 
-                       key={starI} 
-                       className={cn(
-                          "h-4 w-4", 
-                          starI < item.rating ? "text-yellow-500 fill-yellow-500" : "text-white/10"
-                       )} 
-                    />
-                  ))}
-               </div>
+            {/* tags */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {item.tags.map(tag => (
+                <span key={tag} className="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest border border-indigo-100">
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-               <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">{item.title}</h3>
-               <p className="text-sm font-medium text-slate-500 italic mb-8">{item.poet}</p>
-
-               <div className="flex flex-wrap gap-2 mb-8">
-                  {item.tags.map(tag => (
-                    <span key={tag} className="px-2.5 py-0.5 rounded-lg bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase tracking-widest border border-purple-500/20">
-                       {tag}
-                    </span>
-                  ))}
-               </div>
-
-               <button className="mt-auto w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/5 text-white font-bold text-sm hover:bg-white/10 transition-all border border-white/5 group-hover:bg-purple-600 group-hover:border-purple-500 transition-all">
-                  Launch Deep Analysis
-                  <ExternalLink className="h-4 w-4" />
-               </button>
-            </motion.div>
-         ))}
+            <button className="mt-auto w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm hover:bg-indigo-700 hover:text-white hover:border-indigo-700 transition-all">
+              Launch Deep Analysis
+              <ExternalLink className="h-4 w-4" />
+            </button>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
 };
-
-import { cn } from '@/src/lib/utils';

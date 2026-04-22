@@ -3,6 +3,84 @@
 
 @import "tailwindcss";
 
+/* ══════════════════════════════════════════════════════════════
+   SEMANTIC DESIGN TOKENS  ← Edit ONLY this block to retheme
+   ──────────────────────────────────────────────────────────────
+   --c-primary    : main action color  (buttons, CTAs)
+   --c-primary-hv : button hover color
+   --c-background : page background
+   --c-surface    : cards / UI sections
+   --c-accent     : badges, borders, small highlights
+══════════════════════════════════════════════════════════════ */
+:root {
+  --c-primary:    #FB923C;   /* soft orange  — buttons & CTAs     */
+  --c-primary-hv: #22C55E;   /* soft green   — button hover state */
+  --c-background: #FFFFFF;   /* white        — page background    */
+  --c-surface:    #FDEEF1;   /* soft pink    — card backgrounds   */
+  --c-accent:     #FBCFE8;   /* light pink   — badges & borders   */
+  --c-accent-lt:  #FFF5F7;   /* near-white pink — section tints   */
+}
+
+/* ──────────────────────────────────────────────────────────────
+   TAILWIND COLOR SCALE MAPPING
+   Indigo / Purple / Violet shades are remapped so that:
+     bg-indigo-50 / bg-purple-50  → soft pink surface
+     bg-indigo-600 / bg-purple-600 → soft orange primary
+     hover:bg-indigo-700           → soft green hover
+   Nothing in the components needs to change.
+────────────────────────────────────────────────────────────── */
+@theme {
+  /* ── Indigo → Semantic tokens ────────────────── */
+  --color-indigo-50:  var(--c-accent-lt);
+  --color-indigo-100: var(--c-surface);
+  --color-indigo-200: var(--c-accent);
+  --color-indigo-300: #F87171;
+  --color-indigo-400: #FB923C;
+  --color-indigo-500: #F97316;
+  --color-indigo-600: var(--c-primary);      /* buttons default  */
+  --color-indigo-700: var(--c-primary-hv);   /* buttons hover    */
+  --color-indigo-800: #16A34A;
+  --color-indigo-900: #15803D;
+  --color-indigo-950: #14532D;
+
+  /* ── Purple → Semantic tokens ────────────────── */
+  --color-purple-50:  var(--c-accent-lt);
+  --color-purple-100: var(--c-surface);
+  --color-purple-200: var(--c-accent);
+  --color-purple-300: #F87171;
+  --color-purple-400: #FB923C;
+  --color-purple-500: #F97316;
+  --color-purple-600: var(--c-primary);
+  --color-purple-700: var(--c-primary-hv);
+  --color-purple-800: #16A34A;
+  --color-purple-900: #15803D;
+  --color-purple-950: #14532D;
+
+  /* ── Violet → Semantic tokens ────────────────── */
+  --color-violet-50:  var(--c-accent-lt);
+  --color-violet-100: var(--c-surface);
+  --color-violet-200: var(--c-accent);
+  --color-violet-300: #F87171;
+  --color-violet-400: #FB923C;
+  --color-violet-500: #F97316;
+  --color-violet-600: var(--c-primary);
+  --color-violet-700: var(--c-primary-hv);
+  --color-violet-800: #16A34A;
+  --color-violet-900: #15803D;
+  --color-violet-950: #14532D;
+
+  /* ── Rose / Pink / Red light shades → surface ── */
+  --color-rose-50:  var(--c-accent-lt);
+  --color-rose-100: var(--c-surface);
+  --color-rose-200: var(--c-accent);
+  --color-pink-50:  var(--c-accent-lt);
+  --color-pink-100: var(--c-surface);
+  --color-pink-200: var(--c-accent);
+  --color-red-50:   var(--c-accent-lt);
+  --color-red-100:  var(--c-surface);
+}
+
+
 /* ── Custom dark-mode variant ─────────────────────────────── */
 @custom-variant dark (&:is(.dark *));
 
@@ -163,7 +241,34 @@
 
 /* ── Utility classes ──────────────────────────────────────── */
 .gradient-bg {
-  background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%);
+  background: var(--c-primary);
+}
+
+/* ── Semantic surface/primary helpers ────────────────────── */
+.bg-surface   { background: var(--c-surface); }
+.bg-primary   { background: var(--c-primary); }
+.text-primary { color: var(--c-primary); }
+
+/* ── Global button primitives (orange → green on hover) ──── */
+.btn-primary {
+  background: var(--c-primary);
+  color: #fff;
+  border: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.btn-primary:hover  { background: var(--c-primary-hv); }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid var(--c-primary);
+  color: var(--c-primary);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.btn-ghost:hover {
+  background: var(--c-primary-hv);
+  border-color: var(--c-primary-hv);
+  color: #fff;
 }
 
 .glass-panel {

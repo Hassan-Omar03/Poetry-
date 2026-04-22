@@ -1,388 +1,357 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Sparkles, 
-  Send, 
-  BookOpen, 
-  Languages, 
-  History as HistoryIcon,
-  Search,
-  MessageCircle,
-  Hash,
-  Info,
-  BadgeCheck,
-  ChevronRight,
-  ChevronDown,
-  Bookmark,
-  Share2,
-  FileText,
-  ExternalLink,
-  BookMarked,
-  Link as LinkIcon,
-  Feather
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
+import {
+  Search, BookOpen, History, Bookmark, CreditCard,
+  Sparkles, MapPin, TrendingUp, Activity, Zap,
+  Calendar, Clock, ArrowRight, Star, Globe,
+  BarChart3, Award, Target, Flame,
 } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { useAppContext } from '@/src/context/AppContext';
-import { explainPoetry, PoetryAnalysis } from '@/src/services/poetryService';
-import { LANGUAGES } from '@/src/constants/languages';
 
+/* ── mock data ─────────────────────────────────────────────── */
+const MOCK_HISTORY = [
+  { id: 1, poem: 'Do Not Go Gentle into That Good Night', poet: 'Dylan Thomas',    lang: 'English', time: '2h ago',    credits: 1 },
+  { id: 2, poem: 'Shall I Compare Thee to a Summer\'s Day',poet: 'Shakespeare',    lang: 'Urdu',    time: '1d ago',    credits: 1 },
+  { id: 3, poem: 'Ode on a Grecian Urn',                   poet: 'John Keats',     lang: 'Spanish', time: '2d ago',    credits: 1 },
+  { id: 4, poem: 'The Road Not Taken',                     poet: 'Robert Frost',   lang: 'English', time: '3d ago',    credits: 1 },
+  { id: 5, poem: 'I Wandered Lonely as a Cloud',           poet: 'Wordsworth',     lang: 'Arabic',  time: '5d ago',    credits: 1 },
+];
+
+const MOCK_PURCHASES = [
+  { plan: 'Free Plan', date: 'Apr 22, 2026  ·  1:10 PM', price: '$0.00', credits: 20,  status: 'Active' },
+  { plan: 'Scholar Pro', date: 'Mar 15, 2026  ·  9:42 AM', price: '$9.99', credits: 200, status: 'Expired' },
+];
+
+const WEEKLY = [8, 14, 6, 18, 11, 20, 15];
+const DAYS   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+/* ── nav tabs ──────────────────────────────────────────────── */
+const TABS = [
+  { id:'overview',  label:'Overview',     icon: Activity  },
+  { id:'explore',   label:'Explore Poems',icon: Search    },
+  { id:'history',   label:'History',      icon: History   },
+  { id:'saved',     label:'Saved',        icon: Bookmark  },
+  { id:'pricing',   label:'Pricing',      icon: CreditCard},
+];
+
+/* ══════════════════════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════════════════════ */
 export const Dashboard: React.FC = () => {
-  const { user, consumeCredit, addBlog } = useAppContext();
-  const [input, setInput] = useState('');
-  const [targetLanguage, setTargetLanguage] = useState('English');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysis, setAnalysis] = useState<PoetryAnalysis | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [showFullExplanation, setShowFullExplanation] = useState(false);
+  const { user } = useAppContext();
+  const navigate  = useNavigate();
+  const [tab, setTab]       = useState('overview');
+  const [location, setLoc]  = useState<{ city: string; country: string } | null>(null);
 
-  const handleAnalyze = async () => {
-    if (!input.trim()) return;
-    if (user && user.credits <= 0) {
-      setError("You've run out of credits. Please upgrade your plan.");
-      return;
-    }
+  const maxCredits = user?.plan === 'pro' ? 200 : 20;
+  const usedCredits = maxCredits - (user?.credits ?? 0);
+  const usedPct     = Math.min((usedCredits / maxCredits) * 100, 100);
 
-    setIsAnalyzing(true);
-    setError(null);
-    try {
-      const result = await explainPoetry(input, targetLanguage);
-      setAnalysis(result);
-      consumeCredit();
-    } catch (err) {
-      console.error(err);
-      setError("Failed to analyze poetry. Please try again.");
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
+  useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(d => setLoc({ city: d.city ?? 'Unknown', country: d.country_name ?? '' }))
+      .catch(() => setLoc({ city: 'Unknown', country: '' }));
+  }, []);
 
-  const handleConvertToBlog = () => {
-    if (!analysis) return;
-    addBlog({
-      title: `Deep Analysis: ${analysis.themes[0]} in Verse`,
-      content: analysis.explanation,
-      poet: analysis.poet.name,
-      preview: analysis.explanation.substring(0, 150) + "..."
-    });
-    alert("Converted to blog post successfully!");
-  };
-
-  const renderPoemWithTooltips = (text: string) => {
-    if (!analysis) return text;
-    
-    // Create a regex from the dictionary words
-    const wordsToHighlight = analysis.wordDictionary.map(d => d.word.toLowerCase());
-    if (wordsToHighlight.length === 0) return text;
-
-    return text.split('\n').map((line, lineIdx) => (
-      <div key={lineIdx} className="mb-1 min-h-[1.5rem]">
-        {line.split(/(\s+)/).map((part, partIdx) => {
-          const cleanWord = part.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase();
-          const dictEntry = analysis.wordDictionary.find(d => d.word.toLowerCase() === cleanWord);
-          
-          if (dictEntry) {
-            return (
-              <span key={partIdx} className="group relative inline-block">
-                <span className="cursor-help border-b-2 border-purple-400/50 hover:border-purple-400 hover:text-purple-300 transition-all font-bold">
-                  {part}
-                </span>
-                <span className="absolute bottom-full left-1/2 mb-2 w-48 -translate-x-1/2 rounded-lg bg-slate-900 p-3 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 z-50 shadow-2xl border border-white/10 pointer-events-none">
-                  <p className="font-bold text-purple-400 uppercase tracking-tighter mb-1">{dictEntry.word}</p>
-                  <p className="text-slate-200">{dictEntry.meaning}</p>
-                  {dictEntry.pronunciation && (
-                    <p className="mt-1 text-[10px] text-slate-500 italic">[{dictEntry.pronunciation}]</p>
-                  )}
-                </span>
-              </span>
-            );
-          }
-          return <span key={partIdx}>{part}</span>;
-        })}
-      </div>
-    ));
+  const handleTabClick = (id: string) => {
+    if (id === 'explore') { navigate('/explore'); return; }
+    if (id === 'history') { navigate('/history'); return; }
+    if (id === 'saved')   { navigate('/saved');   return; }
+    setTab(id);
   };
 
   return (
-    <div className="space-y-8 pb-12">
-      {/* Search Header */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Poet's Studio</h1>
-          <p className="text-sm text-slate-500">Unlock the mysteries of the written word with geometric precision.</p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-slate-50">
 
-      {/* Input Section */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 transition-all shadow-sm hover:shadow-md hover:border-indigo-300">
-        <div className="absolute top-0 right-0 h-40 w-40 -translate-y-1/2 translate-x-1/2 rounded-full bg-purple-600/10 blur-[60px]" />
-        
-        <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-widest text-purple-600">
-           <Sparkles className="h-4 w-4" />
-           <span>Start a new analysis</span>
-        </div>
-        
-        <div className="flex flex-col md:flex-row md:items-end gap-6 relative">
-          <div className="flex-1">
-            <textarea 
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Paste a poem here, or enter a title..."
-              className="w-full min-h-[160px] rounded-xl bg-slate-50 border border-slate-200 p-6 text-lg text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 outline-none transition-all resize-none serif italic"
-            />
-          </div>
-          
-          <div className="w-full md:w-64 space-y-2">
-            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
-               <Languages className="h-3 w-3" />
-               Target Language
-            </label>
-            <div className="relative group">
-              <select 
-                value={targetLanguage}
-                onChange={(e) => setTargetLanguage(e.target.value)}
-                className="w-full h-14 rounded-xl bg-slate-50 border border-slate-200 pl-5 pr-10 text-sm font-bold text-slate-900 appearance-none focus:border-indigo-400 outline-none transition-all cursor-pointer"
-              >
-                {LANGUAGES.map(lang => (
-                  <option key={lang} value={lang}>{lang}</option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none transition-transform group-hover:text-purple-600" />
-            </div>
-            
-            <button 
-              onClick={handleAnalyze}
-              disabled={isAnalyzing || !input.trim()}
-              className="w-full h-14 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 font-bold text-white transition-all shadow-lg shadow-indigo-200 hover:from-indigo-700 hover:to-purple-700 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group px-6"
-            >
-              {isAnalyzing ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  Analyze
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-
-        {error && <p className="mt-4 text-sm font-medium text-red-500">{error}</p>}
-      </div>
-
-      {/* Results Area */}
-      <AnimatePresence mode="wait">
-        {analysis ? (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="space-y-8"
-          >
-            {/* Top Grid: Poem & Translation */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-               <ResultCard title="Original Poetry" icon={<Search className="h-4 w-4" />}>
-                  <div className="serif italic text-xl leading-relaxed text-slate-200 space-y-2">
-                    {renderPoemWithTooltips(analysis.originalPoem)}
-                  </div>
-                  <p className="mt-6 text-[10px] text-slate-500 uppercase tracking-widest font-bold flex items-center gap-1 border-t border-white/10 pt-4">
-                    <Info className="h-3 w-3" />
-                    Hover underlined words for insights
-                  </p>
-               </ResultCard>
-
-               <div className="flex flex-col gap-8">
-                  {analysis.translation && (
-                    <ResultCard title="Translation" icon={<Languages className="h-4 w-4" />}>
-                        <div className="serif italic text-lg leading-relaxed text-purple-400 whitespace-pre-wrap">
-                          {analysis.translation}
-                        </div>
-                    </ResultCard>
+      {/* ── Top Navigation ─────────────────────────────────── */}
+      <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-1">
+            {TABS.map(t => {
+              const Icon = t.icon;
+              const active = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => handleTabClick(t.id)}
+                  className={cn(
+                    'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all',
+                    active
+                      ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
+                      : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
                   )}
-
-                  <ResultCard title="Explanation" icon={<Info className="h-4 w-4" />} variant="primary">
-                     <div className={cn("text-slate-300 leading-relaxed text-sm italic", !showFullExplanation && "line-clamp-4")}>
-                        "{analysis.explanation}"
-                     </div>
-                     <button 
-                       onClick={() => setShowFullExplanation(!showFullExplanation)}
-                       className="mt-4 flex items-center gap-1 text-purple-400 font-bold text-xs hover:underline uppercase tracking-wider"
-                     >
-                        {showFullExplanation ? "Condense" : "Expand Deep Dive"}
-                        <ChevronDown className={cn("h-4 w-4 transition-transform", showFullExplanation && "rotate-180")} />
-                     </button>
-                  </ResultCard>
-               </div>
-            </div>
-
-            {/* Word Dictionary Table */}
-            <ResultCard title="Word Dictionary" icon={<BookOpen className="h-4 w-4" />}>
-               <div className="overflow-x-auto -mx-6 px-6">
-                 <table className="w-full text-left">
-                    <thead>
-                       <tr className="text-[10px] uppercase tracking-widest text-slate-500 font-bold border-b border-white/10">
-                          <th className="px-4 py-4">Word</th>
-                          <th className="px-4 py-4">Meaning</th>
-                          <th className="px-4 py-4">Translation</th>
-                          <th className="px-4 py-4">Pronunciation</th>
-                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                       {analysis.wordDictionary.map((item, i) => (
-                          <tr key={i} className="hover:bg-white/5 transition-colors">
-                             <td className="px-4 py-4 font-bold text-purple-400">{item.word}</td>
-                             <td className="px-4 py-4 text-xs text-slate-300">{item.meaning}</td>
-                             <td className="px-4 py-4 text-xs text-slate-400">{item.translation || "N/A"}</td>
-                             <td className="px-4 py-4 text-xs font-mono text-slate-500">{item.pronunciation || "[N/A]"}</td>
-                          </tr>
-                       ))}
-                    </tbody>
-                 </table>
-               </div>
-            </ResultCard>
-
-             {/* Poet & Context */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-               <ResultCard title="Poet & Historical Context" icon={<HistoryIcon className="h-4 w-4" />} className="lg:col-span-2">
-                  <div className="flex flex-col md:flex-row gap-8 items-start">
-                     <div className="h-48 w-48 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-lg relative group">
-                        <img src={`https://picsum.photos/seed/${analysis.poet.name}/400/400`} alt={analysis.poet.name} className="h-full w-full object-cover transition-transform group-hover:scale-110" referrerPolicy="no-referrer" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                        <div className="absolute bottom-4 left-4">
-                           <p className="text-[10px] font-bold text-white uppercase tracking-widest bg-purple-600/80 px-2 py-0.5 rounded-md">{analysis.poet.era}</p>
-                        </div>
-                     </div>
-                     <div className="flex-1 space-y-4">
-                        <h3 className="text-3xl font-bold text-white">{analysis.poet.name}</h3>
-                        <p className="text-slate-400 leading-relaxed italic serif">"{analysis.poet.bio}"</p>
-                        <div className="pt-4 border-t border-white/10">
-                           <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Artistic Intent & Form</h4>
-                           <p className="text-xs text-slate-400 leading-relaxed">{analysis.poet.whyForm}</p>
-                        </div>
-                        {analysis.poet.wikipediaLink && (
-                          <a 
-                            href={analysis.poet.wikipediaLink} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white/5 px-5 py-2 text-xs font-bold text-slate-400 border border-white/10 hover:bg-white/10 hover:text-purple-400 transition-all shadow-sm"
-                          >
-                             Explore Biography
-                             <ExternalLink className="h-3 w-3" />
-                          </a>
-                        )}
-                     </div>
-                  </div>
-               </ResultCard>
-
-               <div className="flex flex-col gap-8">
-                  <ResultCard title="Themes & More" icon={<Hash className="h-4 w-4" />}>
-                     <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Key Themes</h4>
-                     <div className="flex flex-wrap gap-2 mb-8">
-                        {analysis.themes.map((theme, i) => (
-                           <span key={theme} className="px-3 py-1 rounded-lg bg-purple-900/30 text-purple-400 text-[10px] font-bold uppercase tracking-widest border border-purple-500/20">
-                              {theme}
-                           </span>
-                        ))}
-                     </div>
-                     <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Literary Devices</h4>
-                     <div className="space-y-4">
-                        {analysis.literaryDevices.map((device, i) => (
-                           <div key={i} className="group p-3 rounded-xl border border-white/5 hover:border-purple-500/20 transition-colors">
-                              <p className="text-sm font-bold text-slate-200 flex items-center justify-between">
-                                 {device.device}
-                                 <BadgeCheck className="h-3 w-3 text-purple-500 opacity-0 group-hover:opacity-100" />
-                              </p>
-                              <p className="text-xs text-slate-500 italic mt-1 serif">"{device.example}"</p>
-                           </div>
-                        ))}
-                     </div>
-                  </ResultCard>
-
-                  <ResultCard title="Sources" icon={<LinkIcon className="h-4 w-4" />}>
-                     <div className="space-y-3">
-                        {analysis.sources.map((source, i) => (
-                           <a key={i} href="#" className="flex items-center gap-3 group p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 transition-all">
-                              <div className="h-8 w-8 rounded-lg bg-purple-900/30 flex items-center justify-center text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all">
-                                 <ExternalLink className="h-3 w-3" />
-                              </div>
-                              <span className="text-xs font-medium text-slate-400 group-hover:text-slate-200 transition-colors truncate">{source}</span>
-                           </a>
-                        ))}
-                     </div>
-                  </ResultCard>
-               </div>
-            </div>
-
-            {/* Footer Actions */}
-            <div className="flex flex-wrap gap-4 items-center justify-center md:justify-start pt-8 border-t border-white/5">
-                <button 
-                  onClick={handleConvertToBlog}
-                  className="flex h-12 items-center gap-2 rounded-2xl bg-purple-600 px-8 font-bold text-white transition-all hover:bg-purple-500 hover:scale-105 active:scale-95 shadow-xl shadow-purple-600/20"
                 >
-                   <FileText className="h-5 w-5" />
-                   Convert to Blog Post
+                  <Icon className="h-4 w-4" />
+                  {t.label}
                 </button>
-                <div className="flex gap-2">
-                   <button className="flex h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 font-bold text-white hover:bg-white/10 transition-all">
-                      <Bookmark className="h-5 w-5" />
-                      Save to Library
-                   </button>
-                   <button className="flex h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-6 font-bold text-white hover:bg-white/10 transition-all">
-                      <Share2 className="h-5 w-5" />
-                   </button>
+              );
+            })}
+
+            <div className="ml-auto pl-4 shrink-0">
+              <Link
+                to="/analyze"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 active:scale-95 transition-all"
+              >
+                <Sparkles className="h-4 w-4" />
+                New Analysis
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Content ────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-8">
+
+        {/* Overview Tab */}
+        {tab === 'overview' && (
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+
+            {/* Welcome Banner */}
+            <div className="rounded-3xl bg-indigo-50 border border-indigo-100 px-8 py-10">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex items-center gap-5">
+                  <div className="h-16 w-16 rounded-2xl bg-indigo-600 flex items-center justify-center text-2xl font-black text-white">
+                    {user?.name?.[0]?.toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-indigo-400 text-sm font-medium mb-1">Welcome back</p>
+                    <h1 className="text-2xl font-bold text-slate-900">{user?.name}</h1>
+                    <p className="text-slate-400 text-sm mt-0.5">{user?.email}</p>
+                  </div>
                 </div>
+                <div className="flex flex-wrap gap-3">
+                  <div className="flex items-center gap-2 rounded-xl bg-white border border-indigo-100 px-4 py-2">
+                    <Award className="h-4 w-4 text-amber-500" />
+                    <span className="text-slate-700 text-sm font-semibold capitalize">{user?.plan} Plan</span>
+                  </div>
+                  {location && (
+                    <div className="flex items-center gap-2 rounded-xl bg-white border border-indigo-100 px-4 py-2">
+                      <MapPin className="h-4 w-4 text-green-500" />
+                      <span className="text-slate-700 text-sm font-semibold">{location.city}{location.country ? `, ${location.country}` : ''}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2 rounded-xl bg-white border border-indigo-100 px-4 py-2">
+                    <Calendar className="h-4 w-4 text-indigo-400" />
+                    <span className="text-slate-700 text-sm font-semibold">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Credits Left',    value: user?.credits ?? 0,  icon: Zap,       color: 'from-indigo-500 to-purple-600', sub: `of ${maxCredits} total` },
+                { label: 'Poems Analyzed',  value: usedCredits,          icon: BookOpen,  color: 'from-purple-500 to-violet-600', sub: 'all time' },
+                { label: 'Day Streak',       value: 7,                   icon: Flame,     color: 'from-orange-400 to-rose-500',   sub: 'consecutive days' },
+                { label: 'Languages Used',   value: 4,                   icon: Globe,     color: 'from-teal-500 to-cyan-500',     sub: 'distinct' },
+              ].map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <motion.div
+                    key={s.label}
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
+                    className="group rounded-2xl bg-white border border-slate-100 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="h-11 w-11 rounded-xl bg-indigo-600 flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="text-3xl font-black text-slate-900">{s.value}</div>
+                    <div className="text-sm font-semibold text-slate-700 mt-0.5">{s.label}</div>
+                    <div className="text-xs text-slate-400 mt-0.5">{s.sub}</div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Middle Row: Credits + Performance */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+              {/* Credits Card */}
+              <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+                className="rounded-2xl bg-white border border-slate-100 p-7 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-lg">Credits & Usage</h3>
+                    <p className="text-slate-400 text-sm mt-0.5">Your analysis balance</p>
+                  </div>
+                  <div className="h-10 w-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+                    <Target className="h-5 w-5 text-indigo-600" />
+                  </div>
+                </div>
+
+                {/* Big credit number */}
+                <div className="flex items-end gap-2 mb-4">
+                  <span className="text-5xl font-black text-slate-900">{user?.credits}</span>
+                  <span className="text-slate-400 text-lg mb-1.5 font-semibold">/ {maxCredits}</span>
+                </div>
+
+                {/* Progress bar */}
+                <div className="h-3 w-full rounded-full bg-slate-100 overflow-hidden mb-3">
+                  <motion.div
+                    initial={{ width: 0 }} animate={{ width: `${usedPct}%` }} transition={{ duration: 0.8, delay: 0.3 }}
+                    className="h-full rounded-full bg-indigo-600"
+                  />
+                </div>
+                <div className="flex justify-between text-xs text-slate-400 font-medium mb-6">
+                  <span>{usedCredits} used</span>
+                  <span>{user?.credits} remaining</span>
+                </div>
+
+                {/* Breakdown */}
+                <div className="space-y-3">
+                  {[
+                    { label: 'Analyses completed', val: usedCredits, color: 'bg-indigo-500' },
+                    { label: 'Available credits',   val: user?.credits ?? 0, color: 'bg-purple-400' },
+                  ].map(r => (
+                    <div key={r.label} className="flex items-center gap-3">
+                      <div className={`h-2.5 w-2.5 rounded-full ${r.color} shrink-0`} />
+                      <span className="text-sm text-slate-600 flex-1">{r.label}</span>
+                      <span className="text-sm font-bold text-slate-900">{r.val}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <Link to="/dashboard/pricing" className="mt-6 flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 text-sm font-semibold hover:bg-indigo-700 hover:text-white hover:border-indigo-700 transition-all">
+                  Upgrade Plan <ArrowRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
+
+              {/* Weekly Performance */}
+              <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }}
+                className="rounded-2xl bg-white border border-slate-100 p-7 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-lg">Weekly Activity</h3>
+                    <p className="text-slate-400 text-sm mt-0.5">Analyses per day this week</p>
+                  </div>
+                  <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center">
+                    <TrendingUp className="h-5 w-5 text-purple-600" />
+                  </div>
+                </div>
+
+                {/* Bar chart */}
+                <div className="flex items-end gap-2 h-36 mb-3">
+                  {WEEKLY.map((v, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                      <motion.div
+                        initial={{ height: 0 }} animate={{ height: `${(v / 20) * 100}%` }}
+                        transition={{ duration: 0.6, delay: 0.3 + i * 0.06 }}
+                        className={cn(
+                          'w-full rounded-t-lg',
+                          i === 5 ? 'bg-indigo-600' : 'bg-slate-100 hover:bg-indigo-100 transition-colors'
+                        )}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  {DAYS.map((d, i) => (
+                    <div key={d} className={cn('flex-1 text-center text-[10px] font-bold', i === 5 ? 'text-indigo-600' : 'text-slate-400')}>{d}</div>
+                  ))}
+                </div>
+
+                <div className="mt-5 flex items-center gap-3 rounded-xl bg-indigo-50 border border-indigo-100 px-4 py-3">
+                  <BarChart3 className="h-5 w-5 text-indigo-600 shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">Peak day: Saturday — 20 analyses</p>
+                    <p className="text-xs text-slate-500">+33% vs last week</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Recent Activity */}
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+              className="rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-lg transition-all overflow-hidden">
+              <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
+                <div>
+                  <h3 className="font-bold text-slate-900 text-lg">Recent Analyses</h3>
+                  <p className="text-slate-400 text-sm mt-0.5">Your last {MOCK_HISTORY.length} poems</p>
+                </div>
+                <Link to="/history" className="flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+                  View all <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="divide-y divide-slate-50">
+                {MOCK_HISTORY.map((item, i) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.06 }}
+                    className="flex items-center gap-4 px-7 py-4 hover:bg-slate-50/60 transition-colors group cursor-pointer"
+                  >
+                    <div className="h-10 w-10 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0 group-hover:bg-indigo-100 transition-all">
+                      <BookOpen className="h-5 w-5 text-indigo-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-slate-800 text-sm truncate group-hover:text-indigo-700 transition-colors">{item.poem}</p>
+                      <p className="text-xs text-slate-400 mt-0.5">{item.poet} · {item.lang}</p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 font-semibold border border-indigo-100">{item.lang}</span>
+                      <div className="flex items-center gap-1 text-xs text-slate-400">
+                        <Clock className="h-3 w-3" />
+                        {item.time}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+          </motion.div>
+        )}
+
+        {/* Pricing History Tab */}
+        {tab === 'pricing' && (
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900">Pricing History</h2>
+              <p className="text-slate-500 mt-1">Your purchase and subscription history</p>
+            </div>
+
+            <div className="rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden">
+              <div className="px-7 py-5 border-b border-slate-100">
+                <div className="grid grid-cols-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                  <span>Plan</span><span>Date & Time</span><span>Credits</span><span>Amount</span>
+                </div>
+              </div>
+              <div className="divide-y divide-slate-50">
+                {MOCK_PURCHASES.map((p, i) => (
+                  <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.08 }}
+                    className="grid grid-cols-4 items-center px-7 py-5 hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center">
+                        <Star className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-800 text-sm">{p.plan}</p>
+                        <span className={cn('text-[10px] font-bold px-2 py-0.5 rounded-full', p.status === 'Active' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-slate-100 text-slate-500')}>{p.status}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-500">{p.date}</p>
+                    <p className="text-sm font-semibold text-indigo-600">{p.credits} credits</p>
+                    <p className="text-sm font-bold text-slate-900">{p.price}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-indigo-50 border border-indigo-100 p-8 text-center">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Unlock unlimited analyses</h3>
+              <p className="text-slate-500 text-sm mb-6">Upgrade to Scholar Pro and get 200 credits/month, priority AI access, and more.</p>
+              <Link to="/pricing" className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition-all">
+                View Plans <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </motion.div>
-        ) : isAnalyzing ? (
-           <div className="flex flex-col items-center justify-center py-20">
-              <div className="relative">
-                <div className="h-24 w-24 rounded-full border-8 border-purple-600/10 border-t-purple-600 animate-spin" />
-                <Sparkles className="absolute inset-0 m-auto h-8 w-8 text-purple-500 animate-pulse" />
-              </div>
-              <h2 className="text-2xl font-black text-white mt-10 mb-2">Deciphering the Verse...</h2>
-              <p className="text-slate-500 max-w-md text-center">Consulting historical records, literary databases, and linguistic archives to unlock the poem's soul.</p>
-           </div>
-        ) : (
-          <div className="py-24 flex flex-col items-center justify-center text-center">
-             <div className="h-40 w-40 rounded-[40px] bg-purple-600/5 border border-purple-600/10 flex items-center justify-center mb-10 rotate-6 shadow-2xl relative">
-                <BookMarked className="h-16 w-16 text-purple-500/50" />
-                <div className="absolute -top-4 -left-4 h-12 w-12 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center rotate-[-12deg] shadow-xl">
-                   <Feather className="h-6 w-6 text-purple-400" />
-                </div>
-             </div>
-             <h2 className="text-3xl font-black text-slate-900 mb-4">Your studio awaits</h2>
-             <p className="text-slate-500 max-w-lg mb-10">Paste a classic sonnet, a modern haiku, or an ancient epic. Our AI models are trained to find the meaning in every stanza.</p>
-             <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-slate-400">
-                <div className="h-1 w-12 bg-slate-200 rounded-full" />
-                Start your analysis above
-                <div className="h-1 w-12 bg-slate-200 rounded-full" />
-             </div>
-          </div>
         )}
-      </AnimatePresence>
+
+      </div>
     </div>
   );
 };
-
-const ResultCard = ({ title, icon, children, variant = 'default', className }: { title: string, icon: React.ReactNode, children: React.ReactNode, variant?: 'default' | 'primary', className?: string }) => (
-  <div className={cn(
-    "rounded-2xl border transition-all shadow-sm",
-    variant === 'primary' ? "bg-indigo-50 border-indigo-200" : "bg-white border-slate-200",
-    className
-  )}>
-    <div className="flex items-center justify-between p-5 border-b border-slate-100">
-       <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
-             {icon}
-          </div>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500">{title}</h2>
-       </div>
-       <div className="flex gap-1">
-          <button className="h-8 w-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-all hover:text-indigo-600"><Bookmark className="h-4 w-4" /></button>
-          <button className="h-8 w-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 transition-all hover:text-indigo-600"><Share2 className="h-4 w-4" /></button>
-       </div>
-    </div>
-    <div className="p-6">
-      {children}
-    </div>
-  </div>
-);

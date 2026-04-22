@@ -44,7 +44,7 @@ export const Login: React.FC = () => {
       {/* ── LEFT — photo + overlay ── */}
       <div className="hidden lg:flex relative overflow-hidden">
         <img src={LOGIN_IMG} alt="Poetry" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/95 via-indigo-900/90 to-purple-900/80" />
+        <div className="absolute inset-0 bg-slate-900/90" />
         <div className="relative z-10 flex flex-col justify-between p-12">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur border border-white/30 flex items-center justify-center">
@@ -77,13 +77,13 @@ export const Login: React.FC = () => {
         <div className="flex items-center justify-between px-8 py-4 border-b border-slate-100">
           <Link
             to="/"
-            className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors group"
+            className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-indigo-700 transition-colors group"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             Back to Home
           </Link>
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
               <BookOpen className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-slate-800 font-semibold text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>PoetryExplainer</span>
@@ -154,7 +154,7 @@ export const Login: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-200 transition-all"
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all"
               style={{ fontWeight: 600 }}
             >
               Sign In <ArrowRight className="w-4 h-4" />
@@ -200,7 +200,7 @@ export const Signup: React.FC = () => {
       {/* ── LEFT — photo + overlay ── */}
       <div className="hidden lg:flex relative overflow-hidden">
         <img src={SIGNUP_IMG} alt="Library" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/95 via-indigo-900/90 to-purple-900/85" />
+        <div className="absolute inset-0 bg-slate-900/90" />
         <div className="relative z-10 flex flex-col justify-between p-12">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur border border-white/30 flex items-center justify-center">
@@ -246,7 +246,7 @@ export const Signup: React.FC = () => {
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center justify-center mb-8">
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
                 <BookOpen className="w-4 h-4 text-white" />
               </div>
               <span className="text-slate-900" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}>PoetryExplainer</span>
@@ -345,7 +345,7 @@ export const Signup: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-200 transition-all mt-2"
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all mt-2"
               style={{ fontWeight: 600 }}
             >
               Create Account — It's Free <ArrowRight className="w-4 h-4" />
@@ -396,7 +396,7 @@ export const AdminLogin: React.FC = () => {
       {/* ── LEFT — photo + overlay ── */}
       <div className="hidden lg:flex relative overflow-hidden">
         <img src={ADMIN_IMG} alt="Library" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/95 via-indigo-900/90 to-purple-900/85" />
+        <div className="absolute inset-0 bg-slate-900/90" />
         <div className="relative z-10 flex flex-col justify-between p-12">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur border border-white/30 flex items-center justify-center">
@@ -439,7 +439,7 @@ export const AdminLogin: React.FC = () => {
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center justify-center mb-8">
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
                 <BookOpen className="w-4 h-4 text-white" />
               </div>
               <span className="text-slate-900" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}>PoetryExplainer</span>
@@ -502,7 +502,7 @@ export const AdminLogin: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-200 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 py-3.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ fontWeight: 600 }}
             >
               {isLoading ? (
